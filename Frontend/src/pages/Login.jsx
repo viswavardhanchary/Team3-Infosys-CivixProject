@@ -1,12 +1,49 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { verifyUser } from '../axios/call.js';
+import { login , verify} from '../axios/call.js';
 import { toast, Bounce } from 'react-toastify';
+import { useEffect } from 'react';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const check = async () => {
+    const result = await verify();
+    if (!result.found) {
+        toast.error(result.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
+        return ;
+      } else {
+        localStorage.setItem("user" , JSON.stringify(result.data));
+        toast.success(result.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
+        navigate('/home/dashboard');
+      }
+    }
+    check();
+  },[])
 
   const validate = () => {
     let tempErrors = {};
@@ -18,12 +55,13 @@ const Login = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
+
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      const result = await verifyUser(formData)
+      const result = await login(formData)
       if (!result.found) {
         toast.error(result.message, {
           position: "top-right",
@@ -38,6 +76,8 @@ const Login = () => {
         });
         return;
       } else {
+        localStorage.setItem("user" , JSON.stringify(result.data));
+        localStorage.setItem("token", result.token);
         toast.success(result.message, {
           position: "top-right",
           autoClose: 5000,
@@ -49,10 +89,13 @@ const Login = () => {
           theme: "dark",
           transition: Bounce,
         });
-        navigate('/dashboard');
+        navigate('/home/dashboard');
       }
     }
   };
+
+
+
 
   return (
     <div className="flex w-full max-w-5xl bg-white/10 backdrop-blur-md rounded-xl shadow-xl overflow-hidden">
