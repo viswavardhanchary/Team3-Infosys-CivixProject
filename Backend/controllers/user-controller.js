@@ -1,9 +1,10 @@
 const User = require('../models/user-model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const salt = Number(process.env.SALT)
+const key = process.env.JWT_KEY
 
-const addUser = async (req, res) => {
-  console.log(req.body);
+const signup = async (req, res) => {
   let { id, name, email, password, role, location } = req.body;
   const isUserExit = await User.findOne({email});
   if(isUserExit !== null) {
@@ -21,7 +22,7 @@ const addUser = async (req, res) => {
   }
 }
 
-const findUser = async (req,res) => {
+const login = async (req,res) => {
   let {email , password} = req.body;
   let user = await User.findOne({email});
   const isMatch = await bcrypt.compare(password, user? user.password : " ");
@@ -29,13 +30,27 @@ const findUser = async (req,res) => {
     res.status(400).json({text : "Invalid email/password"});
     return ;
   }else {
-    const {name , role , location} = user;
-    res.status(200).json({name , email , role , location});
+    const userdata = {name: user.name , email: user.email , role: user.role , location: user.location};
+    const token = jwt.sign(userdata , key , {expiresIn : '30d'});
+    res.status(200).json({token : token , userdata});
     return ;
   }
 }
 
-const deleteUser = async (req,res) => {
+
+const verify = (req,res) => {
+  const authHeader=  req.headers['authorization'];
+  const token = authHeader && authHeader.split(" ")[1];
+  if(!token) {
+    return res.status(400).json({text : "Login Needed"});
+  }
+  jwt.verify(token , key , (err , userdata) => {
+    if(err) return res.status(400).json({text : "Login Needed"});
+    return res.status(200).json(userdata);
+  });
+}
+
+const remove = async (req,res) => {
   let {email} = req.body;
   let user = await User.findOne({email});
   if(!user) {
@@ -48,5 +63,5 @@ const deleteUser = async (req,res) => {
   }
 }
 
-module.exports = [addUser,findUser,deleteUser];
+module.exports = [signup,login,remove,verify];
 

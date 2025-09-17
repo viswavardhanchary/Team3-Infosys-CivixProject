@@ -3,7 +3,12 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import { ToastContainer , Bounce} from 'react-toastify';
 import {Dashboard} from "./pages/Dashboard";
-import { DashboardLayout } from "./Layouts/DashboardLayout";
+import { HomeLayout } from "./Layouts/HomeLayout";
+import { Settings } from "./pages/Settings";
+import { Reports } from "./pages/Reports";
+import { Officials } from "./pages/Officials";
+import { Polls } from "./pages/Polls";
+import { Petitions } from "./pages/Petitions";
 
 const router = createBrowserRouter([
   {
@@ -19,13 +24,33 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/dashboard",
-    element: <DashboardLayout />,
+    path: "/home",
+    element: <HomeLayout />,
     children: [
       {
-        path: '/dashboard',
+        path: '/home/dashboard',
         element: <Dashboard/>
-      }
+      },
+      {
+        path: '/home/petitions',
+        element: <Petitions/>
+      },
+      {
+        path: '/home/polls',
+        element: <Polls/>
+      },
+      {
+        path: '/home/officials',
+        element: <Officials/>
+      },
+      {
+        path: '/home/reports',
+        element: <Reports/>
+      },
+       {
+        path: '/home/settings',
+        element: <Settings/>
+      },
     ]
   },
 ]);

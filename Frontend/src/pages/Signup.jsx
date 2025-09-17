@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { addUserData } from '../axios/call'
+import { signup } from '../axios/call'
 import { toast,Bounce } from 'react-toastify';
 
 const Signup = () => {
@@ -67,7 +67,7 @@ const Signup = () => {
     setErrors(tempErrors);
 
     if (Object.keys(tempErrors).length === 0) {
-      const result = await addUserData(formData);
+      const result = await signup(formData);
       if (!result.found) {
         toast.error(result.message, {
           position: "top-right",
@@ -82,6 +82,7 @@ const Signup = () => {
         });
         return;
       } else {
+        localStorage.setItem("user" , JSON.stringify(result.data));
         toast.success(result.message, {
           position: "top-right",
           autoClose: 5000,
@@ -93,7 +94,7 @@ const Signup = () => {
           theme: "dark",
           transition: Bounce,
         });
-        navigate('/dashboard');
+        navigate('/home/dashboard');
       }
     }
   };
