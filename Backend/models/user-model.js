@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  id: Number,
+  user_name: String,
   name: String,
   email: String,
   password: String,
@@ -9,7 +9,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['citizen', 'official']
   },
-  location: String
+  location: String,
+  petitions: {type : [String] , default: []},
+  polls: {type : [String] , default: []},
+  signedPetitions: {type : [String] , default: []},
+  votedPolls: {type : [String] , default: []},
 });
 
 const User = mongoose.model('User' , userSchema);
