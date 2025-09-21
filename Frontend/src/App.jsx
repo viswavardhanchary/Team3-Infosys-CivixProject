@@ -57,7 +57,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f2e8da] via-[#e6d4bc] to-[#c19a6b] flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-[#f2e8da] via-[#e6d4bc] to-[#c19a6b] flex">
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -70,6 +70,7 @@ function App() {
         pauseOnHover
         theme="light"
         transition={Bounce}
+        style={{ zIndex: 1000000 }}
       />
       <RouterProvider router={router} />
     </div>

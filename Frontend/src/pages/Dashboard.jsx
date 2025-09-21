@@ -1,20 +1,39 @@
-import { UserData } from "../axios/contextapi";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {MdEditNote,MdLocationOn} from 'react-icons/md';
 import {FaSignature, FaTasks} from 'react-icons/fa';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import { userInfo } from "../axios/user";
 
 
 export const Dashboard = () => {
-  const data = useContext(UserData);
+  const [data, setData] = useState(null);
+  const navigate = useNavigate();
+
+
+  useEffect(()=> {
+    getUser();
+    
+  },[]);
+
+
+  const getUser = async () => {
+    const userData = await userInfo();
+    if(!userData.found) {
+      navigate('/login');
+    }else {
+      setData(userData.user);
+    }
+  }
+  
+  
   const petitions = useState({
     found: false,
     data: null
   })
   return <>
-    <div className="flex align-middle p-1 md:p-3 flex-col flex-1 gap-10">
+    <div className="ml-14 md:ml-50 flex align-middle p-1 md:p-3 flex-col flex-1 gap-10">
       <div className="flex flex-col rounded-md  bg-[#c19a6b] p-4">
-          <h1 className="text-xl md:text-3xl text-white font-bold">Welcome Back , {data.name}!</h1>
+          <h1 className="text-xl md:text-3xl text-white font-bold">Welcome Back , {data? data.name: "User"}!</h1>
           <p>See what happening in out commuinty and make your voice heard.</p>
       </div>
 
@@ -24,7 +43,7 @@ export const Dashboard = () => {
             <p className="text-xl">My Petitions</p>
             <Link to='/home/petitions' className="text-2xl text-blue-900"><MdEditNote/></Link>
           </div>
-          <div className="text-3xl">0</div>
+          <div className="text-3xl">{data && data.petitions ? data.petitions.length : 0}</div>
           <p className="text-md text-gray-700">petitions</p>
         </div>
         <div className="flex flex-col flex-1 aling-start p-2 bg-[#d3b795] rounded-lg">
