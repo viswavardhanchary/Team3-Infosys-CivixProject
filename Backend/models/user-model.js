@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-  user_name: String,
+const UserSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
@@ -10,11 +9,8 @@ const userSchema = new mongoose.Schema({
     enum: ['citizen', 'official']
   },
   location: String,
-  petitions: {type : [String] , default: []},
-  polls: {type : [String] , default: []},
-  signedPetitions: {type : [String] , default: []},
-  votedPolls: {type : [String] , default: []},
+  signedByMe: {type: [String] , default: []}
 });
 
-const User = mongoose.model('User' , userSchema);
+const User = mongoose.model('User' , UserSchema);
 module.exports = User;

@@ -1,14 +1,15 @@
 import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import { ToastContainer , Bounce} from 'react-toastify';
-import {Dashboard} from "./pages/Dashboard";
+import { ToastContainer, Bounce } from 'react-toastify';
+import { Dashboard } from "./pages/Dashboard";
 import { HomeLayout } from "./Layouts/HomeLayout";
 import { Settings } from "./pages/Settings";
 import { Reports } from "./pages/Reports";
 import { Officials } from "./pages/Officials";
 import { Polls } from "./pages/Polls";
 import { Petitions } from "./pages/Petitions";
+import { PetitionForm } from "./pages/PetitionForm";
 
 const router = createBrowserRouter([
   {
@@ -29,27 +30,31 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/home/dashboard',
-        element: <Dashboard/>
+        element: <Dashboard />
       },
       {
         path: '/home/petitions',
-        element: <Petitions/>
+        element: <Petitions />
+      },
+      {
+        path: '/home/petitions/form',
+        element: <PetitionForm />
       },
       {
         path: '/home/polls',
-        element: <Polls/>
+        element: <Polls />
       },
       {
         path: '/home/officials',
-        element: <Officials/>
+        element: <Officials />
       },
       {
         path: '/home/reports',
-        element: <Reports/>
+        element: <Reports />
       },
-       {
+      {
         path: '/home/settings',
-        element: <Settings/>
+        element: <Settings />
       },
     ]
   },
@@ -57,7 +62,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f2e8da] via-[#e6d4bc] to-[#c19a6b] flex">
+    <div className="min-h-screen bg-blue-100 flex">
       <ToastContainer
         position="top-right"
         autoClose={5000}

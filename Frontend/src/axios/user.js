@@ -20,9 +20,8 @@ export const login = async ({email , password}) => {
 
 export const signup = async ({name , email , password , role , location}) => {
   
-  const user_name = name + "_" + uuidv4().slice(0,8);
   try {
-    let response = await Api.post('/users/signup' , {user_name , name,email,password , role,location});
+    let response = await Api.post('/users/signup' , {name,email,password , role,location});
     return {
       found: true,
       message: `SucessFull SignUp`,

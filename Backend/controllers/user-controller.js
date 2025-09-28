@@ -5,7 +5,7 @@ const salt = Number(process.env.SALT)
 const key = process.env.JWT_KEY
 
 const signup = async (req, res) => {
-  let { user_name, name, email, password, role, location } = req.body;
+  let { name, email, password, role, location } = req.body;
   const isUserExit = await User.findOne({email});
   if(isUserExit !== null) {
     res.status(400).json({text: "User Already Exisit"});
@@ -14,23 +14,24 @@ const signup = async (req, res) => {
   try {
     const newPassword=  await bcrypt.hash(password , salt);
     password = newPassword;
-    await User.create({ user_name, name, email, password, role, location }); 
-    const token  = await getToken(email); 
+    const user = await User.create({ name, email, password, role, location }); 
+    const token = await getToken(user._id.toString());
     res.status(200).json({token : token});
     return ;
   }catch(e) {
+    console.log(e);
     res.status(500).json({text : "Some Internal Server Error! Please Refresh the Page!And Try Again"});
   }
 }
 
 const remove = async (req,res) => {
-  let {email} = req.body;
-  let user = await User.findOne({email});
+  const {id} = req.body;
+  const user = await User.findOne({_id: id});
   if(!user) {
     res.status(400).json({text: "Some Error While Deleting"});
     return ;
   }else {
-    await User.deleteOne({email});
+    await User.deleteOne({_id : id});
     res.status(200).json({text: "SuccessFully Deleted User"});
     return ;
   }
@@ -44,43 +45,43 @@ const login = async (req,res) => {
     res.status(400).json({text : "Invalid email/password"});
     return ;
   }else {
-    const token  = await getToken(email); 
+    const token  = await getToken(user._id.toString()); 
     res.status(200).json({token : token});
     return ;
   }
 }
 
 
-const updateInfo = async (req,res) => {
-  const {user_name,type} = req.params;
-  const {data , update} = req.body;
-  console.log(user_name,type);
-  const isFound = await User.findOne({user_name});
+const updateSign = async (req,res) => {
+  const {user_id,id,remove} = req.body;
+  const isFound = await User.findOne({_id: user_id});
   if(!isFound) {
-    return res.status(400).json({text : "User Not Found"});
+    return res.status(400).json({text : "Petition Not Found"});
   }
-  if(update) {
+  if(!remove) {
     const obj = {$push : {}};
-    obj.$push[type] = data;
+    obj.$push["signedByMe"] = id;
     try {
       await User.updateOne(
-        {user_name},
+        {_id: user_id},
         obj
       );
       return res.status(200).send();
     }catch(e) {
+      console.log(e);
       return res.status(500).json({text : "Some Internal Server Error! Please Refresh the Page!And Try Again"});
     }
   }else {
     const obj = {$pull : {}};
-    obj.$pull[type] = data;
+    obj.$pull["signedByMe"] = id;
     try {
       await User.updateOne(
-        {user_name},
+        {_id: user_id},
         obj
       );
       res.status(200).send()
     }catch(e) {
+      console.log(e);
       return res.status(500).json({text : "Some Internal Server Error! Please Refresh the Page!And Try Again"});
     }
   }
@@ -92,7 +93,7 @@ const userInfo = async (req,res) => {
     return res.status(400).json({text : "Login Needed!"});
   }else {
     try {
-      let user = await User.findOne({user_name: data.data});
+      let user = await User.findOne({_id: data.data});
       return res.status(200).json(user);
     }catch(e) {
       return res.status(500).json({text : "Some Internal Server Error! Please Refresh the Page!And Try Again"});
@@ -108,7 +109,7 @@ const verifyToken = (req) => {
   }
   const result = jwt.verify(token , key , (err , userdata) => {
     if(err) return {found: false}
-    return {found: true , data: userdata.user_name};
+    return {found: true , data: userdata.id};
   });
   return result;
 }
@@ -124,11 +125,11 @@ const verify = (req,res) => {
 }
 
 
-const getToken = async (email) => {
-  let user = await User.findOne({email});
-  const token = jwt.sign({user_name: user.user_name} , key , {expiresIn : '30d'});
+const getToken = async (id) => {
+  let user = await User.findOne({_id : id});
+  const token = jwt.sign({id} , key , {expiresIn : '30d'});
   return token;
 }
 
-module.exports = [signup,login,remove,verify,userInfo,updateInfo];
+module.exports = [signup,login,remove,verify,userInfo,updateSign];
 

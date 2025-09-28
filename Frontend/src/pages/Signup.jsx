@@ -93,7 +93,7 @@ const Signup = () => {
           progress: undefined,
           theme: "dark",
           transition: Bounce,
-      
+
         });
         navigate('/home/dashboard');
       }
@@ -113,95 +113,68 @@ const Signup = () => {
 
   return (
     <div className="flex items-center justify-center w-full">
+      <div className="flex w-full max-w-5xl bg-white/10 backdrop-blur-md rounded-md shadow-xl overflow-hidden py-2">
 
-      <div className="flex w-full max-w-5xl bg-white/10 backdrop-blur-md rounded-md shadow-xl overflow-hidden my-2">
-
-        <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-gradient-to-b from-[#d2b48c] to-[#c19a6b] p-3 text-white">
-          <h1 className="text-3xl font-bold mb-2">CIVIX</h1>
-          <p className="mb-4">Digital civic engagement platform</p>
-          <img
-            src="/images/parliament.avif"
-            alt="Parliament"
-            className="rounded-lg shadow-lg"
-          />
+        <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-[#e6b380] text-gray-800 rounded-l-xl">
+            <h1 className="text-3xl font-bold">CIVIX</h1>
+            <p className="mb-4">Digital civic engagement platform</p>
+          <img src="/images/parliament.avif" alt="Parliament" className="rounded-lg shadow-lg w-sm-xl" />
         </div>
 
+        <div className="flex-1 flex items-center flex-col justify-center py-4 px-2 bg-gradient-to-r from-[#0f172a] to-[#1e293b] text-gray-800 shadow-lg rounded-r-xl">
 
-        <div className="flex-1 flex items-center flex-col justify-center p-3 bg-[#5a2320]">
+
           <div className="flex flex-1 flex-col items-center justify-center text-white md:hidden">
             <h1 className="text-3xl font-bold mb-2">CIVIX</h1>
             <p className="mb-4 text-center">Digital civic engagement platform</p>
           </div>
+
           <div className="w-full max-w-sm text-white">
             <h2 className="text-2xl font-bold mb-6">Signup</h2>
             <form onSubmit={handleSubmit} noValidate>
 
-              <div className="mb-3">
-                <label className="block mb-1 font-medium">
-                  Full Name <span className="text-red-400">*</span>
-                </label>
+              <div className="mb-4">
+                <label className="block mb-1 font-medium">Full Name <span className="text-red-400">*</span></label>
                 <input
                   type="text"
                   name="name"
-                  className={`w-full px-4 py-2 rounded-lg text-black border ${inputClass(
-                    "name"
-                  )}`}
+                  className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#62d171] bg-white outline-none ${errors.name ? "border border-red-400 bg-red-50" : ""}`}
                   value={formData.name}
                   onChange={handleChange}
                 />
-                {errors.name && (
-                  <p className="text-sm text-[#ff6b6b] mt-1">{errors.name}</p>
-                )}
+                {errors.name && <p className="text-sm text-red-300 mt-1">{errors.name}</p>}
               </div>
 
-              <div className="mb-3">
-                <label className="block mb-1 font-medium">
-                  Email <span className="text-red-400">*</span>
-                </label>
+              <div className="mb-4">
+                <label className="block mb-1 font-medium">Email <span className="text-red-400">*</span></label>
                 <input
                   type="email"
                   name="email"
-                  className={`w-full px-4 py-2 rounded-lg text-black border ${inputClass(
-                    "email"
-                  )}`}
+                  className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#62d171] bg-white outline-none ${errors.email ? "border border-red-400 bg-red-50" : ""}`}
                   value={formData.email}
                   onChange={handleChange}
                 />
-                {errors.email && (
-                  <p className="text-sm text-[#ff6b6b] mt-1">{errors.email}</p>
-                )}
+                {errors.email && <p className="text-sm text-red-300 mt-1">{errors.email}</p>}
               </div>
 
-
-              <div className="mb-3">
-                <label className="block mb-1 font-medium">
-                  Password <span className="text-red-400">*</span>
-                </label>
+              <div className="mb-4">
+                <label className="block mb-1 font-medium">Password <span className="text-red-400">*</span></label>
                 <input
                   type="password"
                   name="password"
-                  className={`w-full px-4 py-2 rounded-lg text-black border ${inputClass(
-                    "password"
-                  )}`}
+                  className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#6bc17b] bg-white outline-none ${errors.password ? "border border-red-400 bg-red-50" : ""}`}
+                  autoComplete='current-password'
                   value={formData.password}
                   onChange={handleChange}
                 />
-                {errors.password && (
-                  <p className="text-sm text-[#ff6b6b] mt-1">
-                    {errors.password}
-                  </p>
-                )}
+                {errors.password && <p className="text-sm text-red-300 mt-1">{errors.password}</p>}
               </div>
 
-              <div className="mb-3">
-                <label className="block mb-1 font-medium">
-                  Role <span className="text-red-400">*</span>
-                </label>
+              <div className="mb-4">
+                <label className="block mb-1 font-medium">Role <span className="text-red-400">*</span></label>
                 <select
                   name="role"
-                  className={`w-full px-4 py-2 rounded-lg text-black border ${inputClass(
-                    "role"
-                  )}`}
+                  className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#62d171] bg-white outline-none ${errors.role ? "border border-red-400 bg-red-50" : ""}`}
                   value={formData.role}
                   onChange={handleChange}
                 >
@@ -210,48 +183,34 @@ const Signup = () => {
                   <option value="official">Official</option>
                   <option value="admin">Admin</option>
                 </select>
-                {errors.role && (
-                  <p className="text-sm text-[#ff6b6b] mt-1">{errors.role}</p>
-                )}
+                {errors.role && <p className="text-sm text-red-300 mt-1">{errors.role}</p>}
               </div>
 
-              <div className="mb-3">
-                <label className="block mb-1 font-medium">
-                  Location <span className="text-red-400">*</span>
-                </label>
+              <div className="mb-4">
+                <label className="block mb-1 font-medium">Location <span className="text-red-400">*</span></label>
                 <input
                   type="text"
                   name="location"
-                  className={`w-full px-4 py-2 rounded-lg text-black border ${inputClass(
-                    "location"
-                  )}`}
+                  className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#62d171] bg-white outline-none ${errors.location ? "border border-red-400 bg-red-50" : ""}`}
                   value={formData.location}
                   onChange={handleChange}
                 />
-                {errors.location && (
-                  <p className="text-sm text-[#ff6b6b] mt-1">{errors.location}</p>
-                )}
+                {errors.location && <p className="text-sm text-red-300 mt-1">{errors.location}</p>}
               </div>
 
-
-              <button
-                type="submit"
-                className="w-full py-2 mt-2 rounded-lg bg-[#c19a6b] hover:bg-[#ff8000] transition font-semibold cursor-pointer"
-              >
+              <button type="submit" className="w-full py-2 rounded-lg bg-[#22c55e] hover:bg-[#2e9827] transition font-semibold cursor-pointer">
                 Signup
               </button>
             </form>
 
             <p className="text-center text-sm mt-4">
-              Already have an account?{" "}
-              <Link to="/login" className="text-[#ff9f43] hover:underline">
-                Login here
-              </Link>
+              Already have an account? <Link to="/login" className="text-red-300 hover:underline">Login here</Link>
             </p>
           </div>
         </div>
       </div>
     </div>
+
 
   );
 };
