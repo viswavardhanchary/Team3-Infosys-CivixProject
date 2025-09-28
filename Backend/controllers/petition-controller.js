@@ -19,10 +19,6 @@ const get = async (req, res) => {
 
 const add = async (req, res) => {
   const { id, created_user_id, created_on, goal, title, description, category, location, status } = req.body;
-  // const isFound = await Petition.findOne({created_user_id,title,description,category,location,goal,created_on,status});
-  // if(isFound) {
-  //   return res.status(400).json({text: "Petition Already Created!"});
-  // }
   if (id) {
     try {
       await Petition.updateOne({ _id: id }, { created_user_id, title, description, category, location, goal, created_on, status });
