@@ -42,7 +42,6 @@ export function PetitionsCard({ petitions, isSigned, handleDelete, data, handleS
 
   return (
     <>
-
       <div className="grid md:grid-cols-1 gap-6 w-full">
         {
           petitionsFilters.length == 0 && <div className="bg-[#0f172a] rounded-xl shadow-lg p-5 flex gap-2 flex-col justify-between border border-[#1e293b] hover:shadow-xl transition w-full items-center">
