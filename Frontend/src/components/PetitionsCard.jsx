@@ -2,8 +2,10 @@ import { FaUsers } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { PetitionModal } from "./PetitionModal";
 import { useEffect, useState } from "react";
+import {get} from '../axios/user';
 export function PetitionsCard({ petitions, isSigned, handleDelete, data, handleSignPetition, filters, setFilters, setButtons, setButtonsColor }) {
   const [selectedPet, setSelectedPet] = useState(null);
+  const [name , setName] = useState("");
   const [petitionsFilters, setPetitionsFilters] = useState(petitions);
   if (petitions.length === 0) {
     return (
@@ -31,6 +33,12 @@ export function PetitionsCard({ petitions, isSigned, handleDelete, data, handleS
       setPetitionsFilters(newPet);
     }
   }, [filters, petitions]);
+
+
+  const userName = async (id) => {
+    const d = await get(id);
+    return d.found ? d.user.name : null;
+  }
 
   return (
     <>
@@ -114,7 +122,7 @@ export function PetitionsCard({ petitions, isSigned, handleDelete, data, handleS
               <div className="flex gap-2 w-50 flex-wrap">
                 <button
                   className="flex-1 bg-[#2563eb] text-white py-2 rounded-lg text-sm hover:bg-[#1e40af] transition cursor-pointer"
-                  onClick={() => setSelectedPet(pet)}
+                  onClick={async () => {setSelectedPet(pet); setName(await userName(pet.created_user_id))}}
                 >
                   View Details
                 </button>
@@ -164,7 +172,7 @@ export function PetitionsCard({ petitions, isSigned, handleDelete, data, handleS
       {selectedPet && (
         <PetitionModal
           pet={selectedPet}
-          creatorName={data?.name}
+          creatorName={name}
           onClose={() => setSelectedPet(null)}
         />
       )}

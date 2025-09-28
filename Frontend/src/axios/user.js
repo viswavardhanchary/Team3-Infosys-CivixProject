@@ -80,6 +80,22 @@ export const userInfo = async () => {
   }
 } 
 
+export const get = async (id) => {
+  try {
+    let response = await Api.get(`/users/get/${id}`);
+    return {
+      found: true,
+      message: `SucessFull SignUp`,
+      user: response.data.user
+    };
+  }catch(e) {
+    return {
+      found: false,
+      message: e.response.data.text
+    }
+  }
+}
+
 
 
 

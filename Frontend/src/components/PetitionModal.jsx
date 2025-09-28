@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function PetitionModal({ pet, onClose, creatorName }) {
+export function PetitionModal({ pet, onClose , creatorName }) {
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") onClose();
@@ -51,7 +51,7 @@ export function PetitionModal({ pet, onClose, creatorName }) {
           <div className="bg-[#fbeaea] p-3 rounded-lg border border-[#4a2c2a]/30">
             <p className="text-xs sm:text-sm text-gray-600">Created By</p>
             <p className="font-semibold text-[#4a2c2a] text-sm sm:text-base break-words">
-              {creatorName || pet.created_user_id}
+              {creatorName || "Loading..."}
             </p>
           </div>
           <div className="bg-[#fbeaea] p-3 rounded-lg border border-[#4a2c2a]/30">
