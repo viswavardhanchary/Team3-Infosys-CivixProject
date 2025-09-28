@@ -1,9 +1,10 @@
 const express = require('express');
 const petitionRouter = express.Router();
-const [add,remove] = require('../controllers/petition-controller');
+const [add,remove,get,updateSign] = require('../controllers/petition-controller');
 
-
+petitionRouter.get('/get' , get);
 petitionRouter.post('/add' , add);
-petitionRouter.delete('/remove' , remove);
+petitionRouter.post("/updateSign" , updateSign);
+petitionRouter.delete('/remove/:id' , remove);
 
 module.exports = petitionRouter;

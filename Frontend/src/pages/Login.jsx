@@ -10,9 +10,11 @@ const Login = () => {
   const navigate = useNavigate();
 
 
+
   useEffect(() => {
     const check = async () => {
-      const result = await verify();
+      let result = {found: false , message : "Login Needed"}
+      if(localStorage.getItem("token") !== null)result = await verify();
       if (!result.found) {
         toast.error(result.message, {
           position: "top-right",
@@ -97,15 +99,19 @@ const Login = () => {
 
   return (
     <div className='flex items-center justify-center w-full'>
-      <div className="flex w-full max-w-5xl bg-white/10 backdrop-blur-md rounded-xl shadow-xl overflow-hidden">
+      <div className="flex w-full max-w-5xl bg-white/10 backdrop-blur-md rounded-md shadow-xl overflow-hidden">
 
-        <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-gradient-to-b from-[#d2b48c] to-[#c19a6b] p-6 text-white">
-          <h1 className="text-3xl font-bold mb-2">CIVIX</h1>
+        <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-gradient-to-b from-[#16a34a] to-[#22c55e] text-gray-800">
+          <div className="absolute top-0 z-99999 flex flex-col align-middle items-center">
+            <h1 className="text-3xl font-bold">CIVIX</h1>
           <p className="mb-4">Digital civic engagement platform</p>
-          <img src="/images/parliament.avif" alt="Parliament" className="rounded-lg shadow-lg max-w-xs" />
+          </div>
+          
+          
+          <img src="/images/parliament.avif" alt="Parliament" className="rounded-lg shadow-lg w-full h-full relative" />
         </div>
 
-        <div className="flex-1 flex items-center flex-col justify-center p-8 bg-[#5a2320] ">
+        <div className="flex-1 flex items-center flex-col justify-center py-8 px-4 bg-gradient-to-r from-[#0f172a] to-[#1e293b] text-gray-800 shadow-lg rounded-r-xl">
           <div className="flex flex-1 flex-col items-center justify-center text-white md:hidden">
             <h1 className="text-3xl font-bold mb-2">CIVIX</h1>
             <p className="mb-4 text-center">Digital civic engagement platform</p>
@@ -119,7 +125,7 @@ const Login = () => {
                 <input
                   type="email"
                   name="email"
-                  className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#c19a6b] bg-white outline-none ${errors.email ? "border border-red-400 bg-red-50" : ""}`}
+                  className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#62d171] bg-white outline-none ${errors.email ? "border border-red-400 bg-red-50" : ""}`}
                   value={formData.email}
                   onChange={handleChange}
                 />
@@ -132,14 +138,14 @@ const Login = () => {
                 <input
                   type="password"
                   name="password"
-                  className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#c19a6b] bg-white outline-none ${errors.password ? "border border-red-400 bg-red-50" : ""}`}
+                  className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#6bc17b] bg-white outline-none ${errors.password ? "border border-red-400 bg-red-50" : ""}`} autoComplete='current-password'
                   value={formData.password}
                   onChange={handleChange}
                 />
                 {errors.password && <p className="text-sm text-red-300 mt-1">{errors.password}</p>}
               </div>
 
-              <button type="submit" className="w-full py-2 rounded-lg bg-[#c19a6b] hover:bg-[#ff8000] transition font-semibold cursor-pointer">
+              <button type="submit" className="w-full py-2 rounded-lg bg-[#22c55e] hover:bg-[#2e9827] transition font-semibold cursor-pointer">
                 Login
               </button>
             </form>
