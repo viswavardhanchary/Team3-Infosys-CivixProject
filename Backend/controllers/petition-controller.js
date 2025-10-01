@@ -37,12 +37,30 @@ const add = async (req, res) => {
 }
 
 
+const updateStatus = async (req,res) => {
+  const {status} = req.body;
+  const {id} = req.params;
+  const isFound = await Petition.findOne({ _id: id });
+  if (!isFound) {
+    return res.status(400).json({ text: "Petition Not Found" });
+  }
+  try {
+    await Petition.updateOne({_id: id} , {status});
+    res.status(200).json({text : "Petition Updated"} )
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({ text: "Some Internal Server Error! Please Refresh the Page!And Try Again" });
+  }
+}
+
+
 const updateSign = async (req, res) => {
   const { pet_id, id, remove } = req.body;
   const isFound = await Petition.findOne({ _id: pet_id });
   if (!isFound) {
     return res.status(400).json({ text: "Petition Not Found" });
   }
+
   if (!remove) {
     const obj = { $push: {} };
     obj.$push["signedBy"] = id;
@@ -53,7 +71,6 @@ const updateSign = async (req, res) => {
       );
       return res.status(200).send();
     } catch (e) {
-      console.log(e);
       return res.status(500).json({ text: "Some Internal Server Error! Please Refresh the Page!And Try Again" });
     }
   } else {
@@ -66,7 +83,6 @@ const updateSign = async (req, res) => {
       );
       res.status(200).send()
     } catch (e) {
-      console.log(e);
       return res.status(500).json({ text: "Some Internal Server Error! Please Refresh the Page!And Try Again" });
     }
   }
@@ -95,4 +111,4 @@ const remove = async (req, res) => {
   }
 }
 
-module.exports = [add, remove, get, updateSign];
+module.exports = [add, remove, get, updateSign,updateStatus];
