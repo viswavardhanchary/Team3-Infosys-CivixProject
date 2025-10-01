@@ -11,6 +11,7 @@ export const Petitions = () => {
   const [data, setData] = useState(null);
   const [petitions, setPetitions] = useState([]);
   const [userPetitions, setUserPetitions] = useState([]);
+  const [isAdmin , setIsAdmin] = useState(false);
   const [filters, setFilters] = useState({
     type: "All",
     location: "All",
@@ -34,6 +35,7 @@ export const Petitions = () => {
       navigate('/login');
     } else {
       setData(userData.user);
+      setIsAdmin(userData.user.email.endsWith("@civix.gov.in"));
       getPetitions(userData.user);
     }
   }
@@ -89,7 +91,6 @@ export const Petitions = () => {
   }
   const isSigned = (curPet) => {
     for (let i = 0; i < curPet.signedBy.length; i++) {
-      console.log(data.signedByMe.includes(curPet.signedBy[i]))
       if (data.signedByMe.includes(curPet.signedBy[i])) return curPet.signedBy[i];
     }
     return null;
@@ -121,7 +122,7 @@ export const Petitions = () => {
           <h1 className="text-2xl md:text-3xl font-bold">Petitions</h1>
           <p className="opacity-90">Browse, sign, and track petitions in your community</p>
         </div>
-        <Link
+        {!isAdmin && <Link
           to="/home/petitions/form"
           state={{
             title: "",
@@ -134,14 +135,14 @@ export const Petitions = () => {
           className="px-4 py-2 md:text-lg rounded-md bg-[#067704] hover:bg-white hover:text-[#067704] transition font-semibold"
         >
           Create Petition
-        </Link>
+        </Link>}
       </div>
 
 
       <div className="flex items-center justify-between flex-wrap">
         <div className="flex flex-wrap gap-2 items-center">
           {["All Petitions", "My Petitions", "Signed by Me"].map((filter) => (
-            <button
+            ((isAdmin && filter !== "My Petitions") || !isAdmin) && <button
               key={filter}
               value={filter === "All Petitions" ? "All" : filter}
               onClick={(e) => handleFilterClick(e, "type")}
@@ -173,9 +174,9 @@ export const Petitions = () => {
           </select>
           <select className="p-2 rounded-md border border-[#2563eb] bg-[#0f172a] text-white outline-none cursor-pointer" onClick={(e) => handleFilterClick(e, "status")} onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))} value={filters.status}>
             <option value="All">Status: All</option>
-            <option value="active">Status: Active</option>
-            <option value="under review">Status: Under Review</option>
-            <option value="closed">Status: Closed</option>
+            <option value="Active">Status: Active</option>
+            <option value="Under Review">Status: Under Review</option>
+            <option value="Closed">Status: Closed</option>
           </select>
         </div>
       </div>
@@ -198,6 +199,8 @@ export const Petitions = () => {
             filters={filters}
             setFilters={setFilters}
             setButtonsColor={setButtonsColor}
+            isAdmin={isAdmin}
+            getUser={getUser}
           />
         )}
       </div>

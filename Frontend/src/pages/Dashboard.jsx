@@ -14,6 +14,7 @@ export const Dashboard = () => {
   const [data, setData] = useState(null);
   const [petitions, setPetitions] = useState([]);
   const [userPetitions, setUserPetitions] = useState([]);
+  const [isAdmin , setIsAdmin] = useState(false);
   const [filters, setFilters] = useState({
     type: "All",
     location: "All",
@@ -42,6 +43,7 @@ export const Dashboard = () => {
       navigate('/login');
     } else {
       setData(userData.user);
+      setIsAdmin(userData.user.email.endsWith("@civix.gov.in"));
       getPetitions(userData.user);
     }
   }
@@ -137,7 +139,7 @@ export const Dashboard = () => {
       </div>
 
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {!isAdmin && <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="flex flex-col p-4 bg-[#0f172a] rounded-lg shadow-md border border-[#1e293b]">
           <div className="flex justify-between items-center">
             <p className="text-xl font-semibold text-white">My Petitions</p>
@@ -170,7 +172,7 @@ export const Dashboard = () => {
           <div className="text-3xl font-bold text-white">0</div>
           <p className="text-md text-gray-400">polls</p>
         </div>
-      </div>
+      </div>}
 
 
       <div className="flex flex-col gap-4 p-3">
@@ -240,6 +242,8 @@ export const Dashboard = () => {
               filters={filters}
               setFilters={setFilters}
               setButtons={setButtons}
+              isAdmin={isAdmin}
+              getUser={getUser}
             />
           )}
         </div>

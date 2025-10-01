@@ -5,9 +5,6 @@ import { userInfo } from "./user";
 export const add = async ({id ,title,description,category,location,goal,status}) => {
   const created_user_id = (await userInfo()).user._id.toString();
   try {
-    // if(id) {
-    //   await Api.delete(`/petitions/remove/${id}`);
-    // }
     const response = await Api.post('/petitions/add' , {id,created_user_id,title,description,category,location,status,goal,created_on:new Date()});
     return {
       found: true,
@@ -36,6 +33,22 @@ export const getPetitionsData = async () => {
     }
   }
 } 
+
+
+export const update = async (petitionId,newStatus) => {
+   try {
+    const response = await Api.put(`/petitions/updateStatus/${petitionId}` ,  {status: newStatus});
+    return {
+      found: true,
+      message: response.data.text
+    }
+  } catch (e) {
+    return {
+      found: false,
+      message: e.response.data.text,
+    }
+  }
+}
 
 
 export const remove = async ({id}) => {
