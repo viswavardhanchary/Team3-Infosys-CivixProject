@@ -10,6 +10,7 @@ import { Officials } from "./pages/Officials";
 import { Polls } from "./pages/Polls";
 import { Petitions } from "./pages/Petitions";
 import { PetitionForm } from "./pages/PetitionForm";
+import { PollsForm } from "./pages/PollsForm";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: '/home/polls',
         element: <Polls />
+      },
+      {
+        path: '/home/polls/form',
+        element: <PollsForm />
       },
       {
         path: '/home/officials',
