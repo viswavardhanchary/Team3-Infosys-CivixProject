@@ -134,7 +134,7 @@ export function PetitionsCard({
         {petitionsFilters?.slice().reverse().map((pet, idx) => (
           <div
             key={idx}
-            className="bg-[#0f172a] rounded-xl shadow-lg p-5 flex flex-col justify-between border border-[#1e293b] hover:shadow-xl transition"
+            className="bg-[#0f172a] rounded-xl shadow-lg p-5 flex flex-col justify-between border border-[#1e293b] hover:shadow-xl transition w-full"
           >
             <div className="flex flex-wrap items-center justify-between">
               <h3 className="font-bold text-lg mb-2 text-white pl-1">
@@ -148,7 +148,7 @@ export function PetitionsCard({
               </p>
             </div>
 
-            <p className="text-sm text-gray-300 mb-2 line-clamp-3 pl-1 text-wrap">
+            <p className="text-sm text-gray-300 mb-2 line-clamp-3 pl-1 break-all">
               {pet.description}
             </p>
 
