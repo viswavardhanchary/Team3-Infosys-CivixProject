@@ -8,13 +8,17 @@ import { PetitionsCard } from "../components/PetitionsCard";
 import { getPetitionsData, remove } from "../axios/petition";
 
 import { addSignToPetition, removeSignToPetition } from "../axios/sign";
+import { getPollsData } from "../axios/poll";
 
 
 export const Dashboard = () => {
   const [data, setData] = useState(null);
   const [petitions, setPetitions] = useState([]);
   const [userPetitions, setUserPetitions] = useState([]);
-  const [isAdmin , setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [acOrUrPet, setAcOrUrPet] = useState(0);
+  const [pollsCountByMe, setPollsCountByMe] = useState(0);
+  const [polls, setPolls] = useState([]);
   const [filters, setFilters] = useState({
     type: "All",
     location: "All",
@@ -34,6 +38,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     getUser();
+   
   }, []);
 
 
@@ -45,6 +50,8 @@ export const Dashboard = () => {
       setData(userData.user);
       setIsAdmin(userData.user.email.endsWith("@civix.gov.in"));
       getPetitions(userData.user);
+      getPolls(userData.user);
+      
     }
   }
 
@@ -69,6 +76,42 @@ export const Dashboard = () => {
       return pet.created_user_id === userData._id;
     });
     setUserPetitions(userPetitionsData);
+    setAcOrUrPet(updateAcOrUr(userPetitionsData));
+    
+  }
+
+  const getPolls = async (userData) => {
+    const pollsData = await getPollsData();
+    if (!pollsData.found) {
+      toast.error(pollsData.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+      return;
+    }
+    setPolls(pollsData.data);
+    const curPoll = pollsData.data;
+    let count = 0;
+    curPoll.map((c) => {
+      c.created_user_id === userData._id && count++;
+    });
+    setPollsCountByMe(count);
+  }
+
+  const updateAcOrUr = (petData) => {
+    let count = 0;
+    petData.map((c) => {
+      (c.status === "Under Review" || c.status === "Closed") && count++
+    });
+    return count;
+
   }
 
   const handleSignPetition = async (pet, signed_user_id, e) => {
@@ -158,7 +201,7 @@ export const Dashboard = () => {
               <FaSignature />
             </Link>
           </div>
-          <div className="text-3xl font-bold text-white">0</div>
+          <div className="text-3xl font-bold text-white">{acOrUrPet}</div>
           <p className="text-md text-gray-400">or under review</p>
         </div>
 
@@ -169,7 +212,7 @@ export const Dashboard = () => {
               <FaTasks />
             </Link>
           </div>
-          <div className="text-3xl font-bold text-white">0</div>
+          <div className="text-3xl font-bold text-white">{pollsCountByMe}</div>
           <p className="text-md text-gray-400">polls</p>
         </div>
       </div>}

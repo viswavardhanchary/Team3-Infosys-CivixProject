@@ -61,7 +61,7 @@ export function PetitionsCard({
 
 
   const handleChangeStatus = async (petitionId, newStatus) => {
-    const response = await update(petitionId , newStatus);
+    const response = await update(petitionId, newStatus);
     if (!response.found) {
       toast.error(response.message, {
         position: "top-right",
@@ -201,43 +201,77 @@ export function PetitionsCard({
                   View Details
                 </button>
                 <button
-                  className={`flex-1 py-2 rounded-lg text-sm cursor-pointer transition ${isSigned(pet)
-                    ? "bg-red-500 hover:bg-red-400 text-white"
-                    : "bg-[#067704] hover:bg-[#1f531e] text-white"
-                    }`}
+                  disabled={pet.status === "Closed"}
+                  className={`flex-1 py-2 rounded-lg text-sm transition
+                  ${isSigned(pet)
+                      ? "bg-red-500 hover:bg-red-400 text-white"
+                      : "bg-[#067704] hover:bg-[#1f531e] text-white"}
+                  ${pet.status === "Closed" ? "opacity-50 cursor-not-allowed hover:bg-gray-400" : "cursor-pointer"}
+                  `}
                   onClick={(e) => handleSignPetition(pet, data._id, e)}
                 >
-                  {isSigned(pet) ? "Unsign it" : "Sign it"}
+                  {pet.status === "Closed"
+                    ? "Closed"
+                    : isSigned(pet)
+                      ? "Unsign it"
+                      : "Sign it"}
                 </button>
+
               </div>
 
               <div className="flex gap-3 items-center flex-wrap">
+
                 {pet.created_user_id === data._id && (
                   <Link
-                    to="/home/petitions/form"
-                    state={{
-                      id: pet._id,
-                      title: pet.title,
-                      category: pet.category,
-                      location: pet.location,
-                      goal: pet.goal,
-                      description: pet.description,
-                      acknowledge: false,
+                    to={
+                      pet.status === "Closed"
+                        ? "#" 
+                        : "/home/petitions/form"
+                    }
+                    state={
+                      pet.status === "Closed"
+                        ? null
+                        : {
+                          id: pet._id,
+                          title: pet.title,
+                          category: pet.category,
+                          location: pet.location,
+                          goal: pet.goal,
+                          description: pet.description,
+                          acknowledge: false,
+                        }
+                    }
+                    className={`py-2 rounded-lg text-md text-center w-15 transition
+        ${pet.status === "Closed"
+                        ? "bg-orange-500 text-white cursor-not-allowed opacity-60"
+                        : "bg-orange-500 hover:bg-orange-400 text-white cursor-pointer"
+                      }`}
+                    onClick={(e) => {
+                      if (pet.status === "Closed") e.preventDefault(); 
                     }}
-                    className="bg-orange-500 text-white py-2 rounded-lg text-md cursor-pointer w-15 hover:bg-orange-400 text-center transition"
                   >
                     Edit
                   </Link>
                 )}
+
+                
                 {(isAdmin || pet.created_user_id === data._id) && (
                   <button
-                    onClick={() => handleDelete(pet._id)}
-                    className="bg-red-600 text-white py-2 rounded-lg text-md hover:bg-red-500 transition cursor-pointer w-15"
+                    onClick={() => {
+                      if (pet.status !== "Closed" || isAdmin) handleDelete(pet._id);
+                    }}
+                    disabled={pet.status === "Closed" && !isAdmin}
+                    className={`py-2 rounded-lg text-md w-15 transition
+        ${pet.status === "Closed" && !isAdmin
+                        ? "bg-red-600 text-white cursor-not-allowed opacity-60"
+                        : "bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+                      }`}
                   >
                     Delete
                   </button>
                 )}
               </div>
+
             </div>
           </div>
         ))}

@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { FaArrowLeft, FaPlus, FaTrash } from "react-icons/fa";
 import { AiOutlineWarning } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate , useLocation } from "react-router-dom";
 import { toast, Bounce } from "react-toastify";
 import { add } from "../axios/poll";
 
 export const PollsForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const pollFromsData = location.state;
+  //console.log(pollFromsData);
 
-  const [pollData, setPollData] = useState({
+  const [pollData, setPollData] = useState(pollFromsData || {
     title: "",
     description: "",
     options: ["", ""],
@@ -84,9 +87,8 @@ export const PollsForm = () => {
       options: pollData.options.filter((opt) => opt.trim() !== ""),
     };
 
-
+    // console.log(formattedPoll)
     const response = await add({ ...formattedPoll });
-
 
     if (response.found) {
       toast.success(response.message, {
