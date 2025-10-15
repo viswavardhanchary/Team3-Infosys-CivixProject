@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaHome, FaFileAlt, FaClock, FaUserTie, FaChartBar, FaCog, FaQuestionCircle } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 
 export const SideBar = () => {
+  const [curColor , setCurColor] = useState('dashboard');
   const colors = {
     dashboard: false,
     petitions: false,
@@ -13,7 +14,21 @@ export const SideBar = () => {
     help: false,
   }
   const location = useLocation().pathname.split("\/");
-  const [active, setActive] = useState({ ...colors, [location[location.length - 1]]: true });
+  
+
+  const whichColor = (location)=> {
+    let cur = "dashboard"
+    for(let color in colors) {
+      if(location.includes(color)) cur = color;
+    }
+    setCurColor(cur);
+  }
+
+  useEffect(()=> {
+    whichColor(location);
+  },[]);
+
+  const [active, setActive] = useState({ ...colors,  [curColor] : true});
 
   const handleClick = (name) => {
     setActive({ ...colors, [name]: true });
@@ -94,6 +109,8 @@ export const SideBar = () => {
           <FaCog className="text-xl" />
           <span className="hidden md:inline">Settings</span>
         </Link>
+
+
 
         <Link
           to="#"

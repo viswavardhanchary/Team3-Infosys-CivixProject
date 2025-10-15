@@ -18,8 +18,8 @@ const PollsSchema = new mongoose.Schema({
   category: String,
   location: String,
   allowMultiple: { type: Boolean, default: false },
-  created_user_id: String
-
+  created_user_id: String,
+  isClosed: {type: Boolean , default: false}
 });
 
 const polls = mongoose.model("poll", PollsSchema);
