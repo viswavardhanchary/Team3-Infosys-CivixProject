@@ -6,6 +6,8 @@ const UserRouter = require('./routers/user-router.js');
 const petitionRouter = require('./routers/petition-router.js');
 const signRouter = require('./routers/sign-router.js');
 const PollsRouter = require('./routers/polls-router.js');
+const CommentsRouter = require("./routers/comments-router.js");
+const AdminLogRouter = require('./routers/admin-logs-router.js');
 const cors = require('cors');
 dotenv.config();
 connectDataBase();
@@ -19,6 +21,9 @@ app.use("/users" , UserRouter);
 app.use("/petitions" , petitionRouter);
 app.use('/sign' ,signRouter);
 app.use('/polls' ,PollsRouter);
+app.use('/comment' , CommentsRouter);
+app.use('/log' , AdminLogRouter);
+
 
 
 app.get("/" , (req,res)=> {

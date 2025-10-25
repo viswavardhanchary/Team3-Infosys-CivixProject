@@ -11,6 +11,8 @@ import { Polls } from "./pages/Polls";
 import { Petitions } from "./pages/Petitions";
 import { PetitionForm } from "./pages/PetitionForm";
 import { PollsForm } from "./pages/PollsForm";
+import { Profile } from "./pages/Profile";
+import { HelpSupport } from "./pages/HelpSupport";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: '/home/dashboard',
         element: <Dashboard />
+      },
+      {
+        path: '/home/profile',
+        element: <Profile />
       },
       {
         path: '/home/petitions',
@@ -61,13 +67,17 @@ const router = createBrowserRouter([
         path: '/home/settings',
         element: <Settings />
       },
+      {
+        path: '/home/help-support',
+        element: <HelpSupport />
+      },
     ]
   },
 ]);
 
 function App() {
   return (
-    <div className="min-h-screen bg-blue-100 flex">
+    <div className="min-h-screen bg-gray-100 shadow-md flex">
       <ToastContainer
         position="top-right"
         autoClose={5000}

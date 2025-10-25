@@ -1,9 +1,20 @@
 import { Api } from "./api";
-import {v4 as uuidv4} from 'uuid';
 
 export const login = async ({email , password}) => {
   try {
+    
     let response = await Api.post('/users/login' , {email , password});
+    localStorage.setItem("token" , response.data.token);
+    if (email.endsWith("@civix.gov.in")) {
+      const user = (await userInfo()).user;
+      try {
+        const activity = "Logined In to Account";
+        await Api.put('/log/addLog', { activity, admin_id: user._id });
+      } catch (e) {
+        console.log(e);
+        
+      }
+    }
     return {
       found: true,
       message: `SucessFull Login`,
@@ -15,11 +26,9 @@ export const login = async ({email , password}) => {
       message: e.response?e.response.data.text:"Invalid Email/password"
     }
   }
-} 
-
+}
 
 export const signup = async ({name , email , password , role , location}) => {
-  
   try {
     let response = await Api.post('/users/signup' , {name,email,password , role,location});
     return {
@@ -33,13 +42,11 @@ export const signup = async ({name , email , password , role , location}) => {
       message: e.response.data.text
     }
   }
-} 
-
+}
 
 export const verify = async () => {
   try {
     const token = localStorage.getItem("token");
-
     const response = await Api.get("/users/verify", {
       headers: {
         Authorization: `Bearer ${token}`
@@ -55,13 +62,11 @@ export const verify = async () => {
       message: e.response.data.text
     }
   }
-} 
-
+}
 
 export const userInfo = async () => {
   try {
     const token = localStorage.getItem("token");
-
     const response = await Api.get("/users/userInfo", {
       headers: {
         Authorization: `Bearer ${token}`
@@ -78,7 +83,7 @@ export const userInfo = async () => {
       message: e.response.data.text
     }
   }
-} 
+}
 
 export const get = async (id) => {
   try {
@@ -96,7 +101,32 @@ export const get = async (id) => {
   }
 }
 
+// new: update profile
+export const updateProfile = async ({ name, phone, bio, socialLinks, location }) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await Api.put('/users/updateProfile', { name, phone, bio, socialLinks, location }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return { found: true, user: response.data.user, message: response.data.text || "Updated" };
+  } catch (e) {
+    return { found: false, message: e.response ? e.response.data.text : "Failed to update profile" };
+  }
+}
 
 
-
-
+export const deleteAccount = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await Api.delete('/users/deleteAccount', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return { found: true, message: response.data.text };
+  } catch (e) {
+    return { found: false, message: e.response ? e.response.data.text : "Failed to delete account" };
+  }
+}

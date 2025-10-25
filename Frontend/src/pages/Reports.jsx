@@ -13,6 +13,9 @@ import {
 
 import { getPetitionsData } from "../axios/petition";
 import { getPollsData } from "../axios/poll";
+import { userInfo } from "../axios/user";
+import { useNavigate } from "react-router-dom";
+
 
 ChartJS.register(
   ArcElement,
@@ -25,16 +28,26 @@ ChartJS.register(
 );
 
 export const Reports = () => {
+  const [data, setData] = useState(null);
   const [petitions, setPetitions] = useState([]);
   const [polls, setPolls] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadData() {
+      
+
       try {
+        const userData = await userInfo();
+         if (!userData?.found) {
+          navigate('/login');
+        } else {
+          setData(userData.user);
+        }
         const petitionsRes = await getPetitionsData();
         const pollsRes = await getPollsData();
-
+      
         if (petitionsRes.found) setPetitions(petitionsRes.data);
         if (pollsRes.found) setPolls(pollsRes.data);
       } catch (err) {
@@ -64,7 +77,7 @@ export const Reports = () => {
     datasets: [
       {
         data: Object.values(petitionStatusCounts),
-        backgroundColor: ["#22c55e", "#facc15","#ef4444"],
+        backgroundColor: ["#22c55e", "#facc15", "#ef4444"],
       },
     ],
   };
@@ -99,7 +112,7 @@ export const Reports = () => {
     .slice(0, 8);
 
   const pollColors = pollsSorted.map((_, i) =>
-     i < pollsSorted.length / 2 ? "#22c55e" : "#ef4444"
+    i < pollsSorted.length / 2 ? "#22c55e" : "#ef4444"
   );
 
   const pollVotesData = {
@@ -126,7 +139,7 @@ export const Reports = () => {
     datasets: [
       {
         data: Object.values(pollStatus),
-        backgroundColor: ["#22c55e" , "#ef4444"]
+        backgroundColor: ["#22c55e", "#ef4444"]
       },
     ],
   };
@@ -155,7 +168,7 @@ export const Reports = () => {
           <h2 className="text-xl font-semibold mb-4 text-blue-800">Petitions by Status</h2>
           <div className="h-64">
             <Pie data={petitionStatusData} options={pieOptions} />
-            {(petitionStatusData.datasets.data ===0 || petitions?.length === 0) && <h3 className="text-red-600 text-2xl align-center h-58 w-58 text-center">Not Data</h3>}
+            {(petitionStatusData.datasets.data === 0 || petitions?.length === 0) && <h3 className="text-red-600 text-2xl align-center h-58 w-58 text-center">Not Data</h3>}
           </div>
         </div>
 
@@ -163,7 +176,7 @@ export const Reports = () => {
           <h2 className="text-xl font-semibold mb-4 text-blue-800">Petitions (High → Low Signs)</h2>
           <div className="h-64">
             <Bar data={petitionSignsData} options={barOptions} />
-            {(petitionSignsData.datasets.data ===0 || petitions?.length === 0) && <h3 className="text-red-600 text-2xl align-center h-58 w-58 text-center">Not Data</h3>}
+            {(petitionSignsData.datasets.data === 0 || petitions?.length === 0) && <h3 className="text-red-600 text-2xl align-center h-58 w-58 text-center">Not Data</h3>}
           </div>
         </div>
 
@@ -171,7 +184,7 @@ export const Reports = () => {
           <h2 className="text-xl font-semibold mb-4 text-blue-800">Polls (High → Low Votes)</h2>
           <div className="h-64">
             <Bar data={pollVotesData} options={barOptions} />
-            {(pollVotesData.datasets.data ===0 || polls?.length === 0) && <h3 className="text-red-600 text-2xl align-center h-58 w-58 text-center">Not Data</h3>}
+            {(pollVotesData.datasets.data === 0 || polls?.length === 0) && <h3 className="text-red-600 text-2xl align-center h-58 w-58 text-center">Not Data</h3>}
           </div>
         </div>
 
@@ -179,7 +192,7 @@ export const Reports = () => {
           <h2 className="text-xl font-semibold mb-4 text-blue-800">Active vs Closed Polls</h2>
           <div className="h-64">
             <Pie data={pollStatusData} options={pieOptions} />
-            { polls?.length === 0 && <h3 className="text-red-600 text-2xl align-center h-58 w-58 text-center">Not Data</h3>}
+            {polls?.length === 0 && <h3 className="text-red-600 text-2xl align-center h-58 w-58 text-center">Not Data</h3>}
           </div>
         </div>
       </div>
