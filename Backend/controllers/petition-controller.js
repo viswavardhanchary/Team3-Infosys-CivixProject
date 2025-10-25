@@ -4,10 +4,13 @@ const User = require('../models/user-model');
 
 
 
+
+
 const get = async (req, res) => {
   const isFound = await Petition.find({});
   if (!isFound) {
     return res.status(400).json({ text: "Error in getting Petitions!Try Reload the Website" });
+    
   }
   try {
     return res.status(200).json(isFound);

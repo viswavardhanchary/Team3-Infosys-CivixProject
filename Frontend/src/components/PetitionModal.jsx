@@ -36,7 +36,7 @@ export function PetitionModal({ pet, onClose , creatorName }) {
           </p>
         </div>
 
-        <div className="text-[#4a2c2a] text-sm sm:text-base mb-4 max-h-40 sm:max-h-60 overflow-y-auto pr-2">
+        <div className="text-[#4a2c2a] text-sm sm:text-base mb-4 max-h-40 sm:max-h-60 overflow-y-auto pr-2 break-all">
           {pet.description}
         </div>
 

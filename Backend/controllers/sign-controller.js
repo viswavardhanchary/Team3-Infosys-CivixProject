@@ -31,5 +31,18 @@ const remove = async (req,res) => {
   }
 }
 
+const getSign = async (req,res) => {
+  try {
+    const isFound = await Sign.find();
+    if(isFound) {
+      return res.status(200).send({data : isFound});
+    }else {
+      return res.status(500).json({text : "Some Internal Server Error! Please Refresh the Page!And Try Again"});
+    }
+  } catch (e) {
+    return res.status(500).json({text : "Some Internal Server Error! Please Refresh the Page!And Try Again"});
+  }
+}
 
-module.exports = [add,remove];
+
+module.exports = [add,remove,getSign];

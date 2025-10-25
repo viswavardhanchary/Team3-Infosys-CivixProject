@@ -2,6 +2,7 @@ import { useState } from "react";
 import { update } from "../axios/poll";
 import { Pie } from "react-chartjs-2";
 import { updateClose } from '../axios/poll';
+import { FaEdit, FaTrash, FaLock, FaUnlock, FaChartBar, FaEye } from "react-icons/fa";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -96,11 +97,11 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
   }
 
   return (
-    <div className="bg-[#0f172a] p-6 rounded-xl shadow-xl text-white mb-6 w-full border border-gray-700 hover:shadow-2xl transition-all duration-300">
+    <div className="bg-[rgb(208,235,250)] p-6 rounded-xl shadow-xl text-black mb-6 w-full border border-gray-700 hover:shadow-2xl transition-all duration-300">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
-        <h2 className="text-2xl font-bold text-white">{poll.title}</h2>
-        <p className="text-sm text-gray-400 mt-1 sm:mt-0">
-          <span className="text-blue-400">{poll.category}</span> • {poll.location}
+        <h2 className="text-2xl font-bold text-black">{poll.title}</h2>
+        <p className="text-sm text-black mt-1 sm:mt-0">
+          <span className="text-red-400">{poll.category}</span> • {poll.location}
         </p>
       </div>
 
@@ -123,12 +124,12 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
             >
               <div className="flex justify-between items-center">
                 <span className="font-medium text-base">{opt.text}</span>
-                <span className="text-xs text-gray-400">{opt.votes.length} votes</span>
+                <span className="text-xs text-black">{opt.votes.length} votes</span>
               </div>
 
               <div className="w-full bg-gray-800 rounded-full h-2 mt-2 overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-blue-500 to-blue-400 h-2 rounded-full transition-all duration-500"
+                  className="bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full transition-all duration-500"
                   style={{ width: `${percent}%` }}
                 ></div>
               </div>
@@ -140,53 +141,74 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
           );
         })}
         {poll.allowMultiple && (
-          <p className="text-gray-400 text-md">
+          <p className="text-black text-md">
             <span className="text-red-600">*</span>Can Vote Multiple Answers
           </p>
         )}
       </div>
 
       <div className="mt-5 flex items-center gap-2 justify-between flex-wrap">
+
         <button
           onClick={() => setShowDescription((prev) => !prev)}
-          className="text-blue-400 text-sm font-medium hover:text-blue-300 transition-all"
+          title="View Description"
+          className="text-blue-400 text-lg font-medium hover:text-blue-300 transition-all cursor-pointer"
         >
-          {showDescription ? "Hide Description ▲" : "View Description ▼"}
+          <FaEye/>
         </button>
 
         <button
-          onClick={() => setShowReport(true)}
-          className="text-white text-sm font-medium hover:text-[#067704] transition-all rounded-md bg-[#067704] hover:bg-white px-4 py-2 cursor-pointer"
+          onClick={() => {getPolls();setShowReport(true)}}
+          title="View Report"
+          className="text-[#067704] text-2xl font-medium hover:text-[#067704] transition rounded-md cursor-pointer flex items-center gap-2"
         >
-          View Report
+          <FaChartBar />
         </button>
 
+  
         {data._id === poll.created_user_id && (
-          <div className="flex gap-2 items-center">
-            <Link to={poll.isClosed ? "#" : "/home/polls/form"}
+          <div className="flex gap-4 items-center">
+
+            <Link
+              to={poll.isClosed ? "#" : "/home/polls/form"}
               disabled={poll.isClosed}
-              state={
-                {
-                  id: poll._id,
-                  title: poll.title,
-                  description: poll.description,
-                  options: poll.options.map((cur) => cur.text),
-                  category: poll.category,
-                  location: poll.location,
-                  allowMultiple: poll.allowMultiple,
-                  isClosed: poll.isClosed
-                }
-              }
-              className={`bg-orange-500 py-2 w-15 text-center rounded-md hover:bg-orange-400 ${poll.isClosed ? "cursor-not-allowed opacity-40" : "cursor-pointer opacity-100"}`}>Edit</Link>
+              state={{
+                id: poll._id,
+                title: poll.title,
+                description: poll.description,
+                options: poll.options.map((cur) => cur.text),
+                category: poll.category,
+                location: poll.location,
+                allowMultiple: poll.allowMultiple,
+                isClosed: poll.isClosed,
+              }}
+              title="Edit Poll"
+              className={`text-orange-500 text-lg flex justify-center items-center rounded-md hover:text-orange-400 transition ${poll.isClosed ? "cursor-not-allowed opacity-40" : "cursor-pointer opacity-100"
+                }`}
+            >
+              <FaEdit />
+            </Link>
+
+
             <button
               onClick={() => handleDelete(poll)}
               disabled={poll.isClosed}
-              className={`bg-red-600 text-white py-2 rounded-lg text-md hover:bg-red-500 transition w-15 ${poll.isClosed ? "cursor-not-allowed opacity-40" : "cursor-pointer opacity-100"}`}
+              title="Delete Poll"
+              className={`text-red-600 text-lg hover:text-red-500 transition flex justify-center items-center ${poll.isClosed ? "cursor-not-allowed opacity-40" : "cursor-pointer opacity-100"
+                }`}
             >
-              Delete
+              <FaTrash />
             </button>
-            <button className={`${poll.isClosed ? "bg-green-700 hover:bg-green-500" : "bg-orange-600 hover:bg-red-500"} text-white py-2 rounded-lg text-md transition cursor-pointer w-20`} onClick={() => handleClose(poll._id)}>
-              {poll.isClosed ? "Open Poll" : "Close Poll"}
+
+            <button
+              onClick={() => handleClose(poll._id)}
+              title={poll.isClosed ? "Open Poll" : "Close Poll"}
+              className={`text-lg transition flex justify-center items-center cursor-pointer ${poll.isClosed
+                  ? "text-green-700 hover:text-green-500"
+                  : "text-orange-600 hover:text-red-500"
+                }`}
+            >
+              {poll.isClosed ? <FaUnlock /> : <FaLock />}
             </button>
           </div>
         )}
@@ -223,7 +245,7 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
               <div className="flex gap-8 flex-wrap items-center w-full">
                 <div className="flex justify-center">
                   <div className="w-58 h-58">
-                    {poll.options.map((curPoll)=> {return curPoll.votes.length !== 0}).includes(true) && <Pie
+                    {poll.options.map((curPoll) => { return curPoll.votes.length !== 0 }).includes(true) && <Pie
                       data={pieData}
                       options={{
                         plugins: {
@@ -231,8 +253,7 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
                         },
                         maintainAspectRatio: false,
                       }}
-                    />}
-                    {!poll.options.map((curPoll)=> {return curPoll.votes.length !== 0}).includes(true) && <h3 className="text-red-600 text-2xl align-center h-58 w-58 text-center">Not Data</h3>}
+                    />}                    {!poll.options.map((curPoll) => { return curPoll.votes.length !== 0 }).includes(true) && <h3 className="text-red-600 text-2xl align-center h-58 w-58 text-center">Not Data</h3>}
                   </div>
                 </div>
 
