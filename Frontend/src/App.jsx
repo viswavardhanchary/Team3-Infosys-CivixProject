@@ -14,6 +14,7 @@ import { PollsForm } from "./pages/PollsForm";
 import { Profile } from "./pages/Profile";
 import { HelpSupport } from "./pages/HelpSupport";
 import { PageNotFound } from "./pages/PageNotFound";
+import ScrollToTop from "./components/ScrollToTop";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="min-h-screen bg-[#fdf3e7] flex flex-col">
+      <ScrollToTop/>
       <ToastContainer
         position="top-right"
         autoClose={5000}
