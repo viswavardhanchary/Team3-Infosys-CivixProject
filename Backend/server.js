@@ -13,7 +13,7 @@ dotenv.config();
 connectDataBase();
 
 app.use(cors({
-  origin: ["http://localhost:5173" , "http://localhost:5174"] 
+  origin: ["https://civix-team3.onrender.com"] 
 }));
 
 app.use(express.json());
