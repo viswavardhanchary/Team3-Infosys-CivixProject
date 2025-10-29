@@ -1,10 +1,9 @@
 import { Api } from "./api";
 
-export const login = async ({email , password}) => {
+export const login = async ({ email, password }) => {
   try {
-    
-    let response = await Api.post('/users/login' , {email , password});
-    localStorage.setItem("token" , response.data.token);
+    let response = await Api.post('/users/login', { email, password });
+    localStorage.setItem("token", response.data.token);
     if (email.endsWith("@civix.gov.in")) {
       const user = (await userInfo()).user;
       try {
@@ -12,7 +11,6 @@ export const login = async ({email , password}) => {
         await Api.put('/log/addLog', { activity, admin_id: user._id });
       } catch (e) {
         console.log(e);
-        
       }
     }
     return {
@@ -20,29 +18,29 @@ export const login = async ({email , password}) => {
       message: `SucessFull Login`,
       token: response.data.token
     };
-  }catch(e) {
+  } catch (e) {
     return {
       found: false,
-      message: e.response?e.response.data.text:"Invalid Email/password"
-    }
+      message: e.response ? e.response.data.text : "Invalid Email/password"
+    };
   }
-}
+};
 
-export const signup = async ({name , email , password , role , location}) => {
+export const signup = async ({ name, email, password, role, location }) => {
   try {
-    let response = await Api.post('/users/signup' , {name,email,password , role,location});
+    let response = await Api.post('/users/signup', { name, email, password, role, location });
     return {
       found: true,
       message: `SucessFull SignUp`,
       token: response.data.token
     };
-  }catch(e) {
+  } catch (e) {
     return {
       found: false,
       message: e.response.data.text
-    }
+    };
   }
-}
+};
 
 export const verify = async () => {
   try {
@@ -56,13 +54,13 @@ export const verify = async () => {
       found: true,
       message: `SucessFull Login`,
     };
-  }catch(e) {
+  } catch (e) {
     return {
       found: false,
       message: e.response.data.text
-    }
+    };
   }
-}
+};
 
 export const userInfo = async () => {
   try {
@@ -77,13 +75,13 @@ export const userInfo = async () => {
       message: `SucessFull Login`,
       user: response.data
     };
-  }catch(e) {
+  } catch (e) {
     return {
       found: false,
       message: e.response.data.text
-    }
+    };
   }
-}
+};
 
 export const get = async (id) => {
   try {
@@ -93,15 +91,15 @@ export const get = async (id) => {
       message: `SucessFull SignUp`,
       user: response.data.user
     };
-  }catch(e) {
+  } catch (e) {
     return {
       found: false,
       message: e.response.data.text
-    }
+    };
   }
-}
+};
 
-// new: update profile
+// Update profile
 export const updateProfile = async ({ name, phone, bio, socialLinks, location }) => {
   try {
     const token = localStorage.getItem("token");
@@ -114,8 +112,7 @@ export const updateProfile = async ({ name, phone, bio, socialLinks, location })
   } catch (e) {
     return { found: false, message: e.response ? e.response.data.text : "Failed to update profile" };
   }
-}
-
+};
 
 export const deleteAccount = async () => {
   try {
@@ -129,4 +126,24 @@ export const deleteAccount = async () => {
   } catch (e) {
     return { found: false, message: e.response ? e.response.data.text : "Failed to delete account" };
   }
-}
+};
+
+// ✅ NEW: Send OTP for email verification
+export const sendEmailOtp = async ({ email }) => {
+  try {
+    const response = await Api.post('/users/send-otp', { email });
+    return { success: true, message: response.data.text };
+  } catch (e) {
+    return { success: false, message: e.response ? e.response.data.text : "Failed to send OTP" };
+  }
+};
+
+// ✅ NEW: Verify OTP for email verification
+export const verifyEmailOtp = async ({ email, otp }) => {
+  try {
+    const response = await Api.post('/users/verify-otp', { email, otp });
+    return { success: true, message: response.data.text };
+  } catch (e) {
+    return { success: false, message: e.response ? e.response.data.text : "Invalid OTP" };
+  }
+};

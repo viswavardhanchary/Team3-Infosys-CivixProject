@@ -1,159 +1,97 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { login, verify } from '../axios/user.js';
-import { toast, Bounce } from 'react-toastify';
-import { useEffect } from 'react';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../axios/user";
+import { toast, Bounce } from "react-toastify";
 
-const Login = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [errors, setErrors] = useState({});
+export default function Login() {
+  const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
-
-
-  useEffect(() => {
-    const check = async () => {
-      let result = {found: false , message : "Login Needed"}
-      if(localStorage.getItem("token") !== null)result = await verify();
-      if (!result.found) {
-        toast.error(result.message, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce,
-        });
-        return;
-      } else {
-        toast.success(result.message, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce,
-        });
-        navigate('/home/dashboard');
-      }
-    }
-    check();
-  }, [])
-
-  const validate = () => {
-    let tempErrors = {};
-    if (!formData.email) tempErrors.email = "Email is required.";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) tempErrors.email = "Invalid email address.";
-    if (!formData.password) tempErrors.password = "Password is required.";
-    else if (formData.password.length < 6) tempErrors.password = "Password must be at least 6 characters.";
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
-
-
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      const result = await login(formData)
-      if (!result.found) {
-        toast.error(result.message, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce,
-        });
-        return;
-      } else {
-        localStorage.setItem("token", result.token);
-        toast.success(result.message, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce, 
-        });
-        navigate('/home/dashboard');
-      }
+
+    const result = await login(form);
+    if (result?.token) {
+      toast.success("Login successful!", { theme: "dark", transition: Bounce });
+      navigate("/home/dashboard");
+    } else {
+      toast.error(result?.message || "Invalid credentials", {
+        theme: "dark",
+        transition: Bounce,
+      });
     }
   };
 
-
-
-
   return (
-<div className='flex items-center justify-center w-full'>
-  <div className="flex w-full max-w-5xl bg-white/10 backdrop-blur-md rounded-md shadow-xl overflow-hidden">
-    <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-gradient-to-b from-[#0055A4] to-[#4CAF50] text-gray-800">
-      <div className="absolute top-0 z-99999 flex flex-col align-middle items-center">
-        <h1 className="text-3xl font-bold text-[#0055A4]">CIVIX</h1>
-        <p className="mb-4 text-[#4CAF50]">Digital civic engagement platform</p>
-      </div>
-      <img src="/images/parliament.avif" alt="Parliament" className="rounded-lg shadow-lg w-full h-full relative" />
-    </div>
+    <div className="flex items-center justify-center min-h-screen bg-[#F5EDE2]">
+      <div className="flex flex-col md:flex-row bg-[#EADDC7] rounded-lg shadow-2xl overflow-hidden w-full max-w-5xl">
 
-    <div className="flex-1 flex items-center flex-col justify-center py-8 px-4 bg-gradient-to-r from-[#333333] to-[#1e293b] text-white shadow-lg rounded-r-xl">
-      <div className="flex flex-1 flex-col items-center justify-center text-white md:hidden">
-        <h1 className="text-3xl font-bold text-[#0055A4] mb-2">CIVIX</h1>
-        <p className="mb-4 text-[#4CAF50] text-center">Digital civic engagement platform</p>
-      </div>
-      <div className="w-full max-w-sm text-white">
-        <h2 className="text-2xl font-bold mb-6 text-[#0055A4]">Login</h2>
-        <form onSubmit={handleSubmit} noValidate>
-          <div className="mb-4">
-            <label className="block mb-1 font-medium text-[#4CAF50]">Email <span className="text-red-400">*</span></label>
-            <input
-              type="email"
-              name="email"
-              className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#62d171] bg-white outline-none ${errors.email ? "border border-red-400 bg-red-50" : ""}`}
-              value={formData.email}
-              onChange={handleChange}
-            />
-            {errors.email && <p className="text-sm text-red-300 mt-1">{errors.email}</p>}
+        {/* Left Image Section */}
+        <div className="md:w-1/2 bg-[#DCC7A1] relative flex items-center justify-center">
+          <img
+            src="/images/parliament.avif"
+            alt="CIVIX"
+            className="w-full h-full object-cover opacity-90"
+          />
+          <div className="absolute top-6 text-center text-white drop-shadow-md">
+            <h1 className="text-4xl font-extrabold text-[#F9F3ED]">CIVIX</h1>
+            <p className="text-[#EFE2D0] text-sm mt-1">
+              Digital civic engagement platform
+            </p>
           </div>
+        </div>
 
-          <div className="mb-4">
-            <label className="block mb-1 font-medium text-[#4CAF50]">Password <span className="text-red-400">*</span></label>
-            <input
-              type="password"
-              name="password"
-              className={`w-full px-4 py-2 rounded-lg text-black focus:ring-2 focus:ring-[#6bc17b] bg-white outline-none ${errors.password ? "border border-red-400 bg-red-50" : ""}`} autoComplete='current-password'
-              value={formData.password}
-              onChange={handleChange}
-            />
-            {errors.password && <p className="text-sm text-red-300 mt-1">{errors.password}</p>}
-          </div>
+        {/* Right Login Form Section */}
+        <div className="md:w-1/2 flex flex-col justify-center p-10 text-[#5B3A29]">
+          <h2 className="text-3xl font-bold mb-6 text-[#4A2E1F]">Login</h2>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Email <span className="text-[#9C6B3B]">*</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 rounded-lg bg-[#FDFBF8] border border-[#D7C3A9] focus:outline-none focus:ring-2 focus:ring-[#B68B60] text-[#4A2E1F]"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Password <span className="text-[#9C6B3B]">*</span>
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 rounded-lg bg-[#FDFBF8] border border-[#D7C3A9] focus:outline-none focus:ring-2 focus:ring-[#B68B60] text-[#4A2E1F]"
+              />
+            </div>
 
-          <button type="submit" className="w-full py-2 rounded-lg bg-[#FF9800] hover:bg-[#FF5722] transition font-semibold cursor-pointer">
-            Login
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="w-full bg-[#B68B60] hover:bg-[#A47650] text-white font-semibold py-2 rounded-lg shadow-md transition-all duration-300"
+            >
+              Login
+            </button>
+          </form>
 
-        <p className="text-center text-sm mt-4">
-          Don’t have an account? <Link to="/signup" className="text-[#FF9800] hover:underline">Signup here</Link>
-        </p>
+          <p className="text-center text-sm mt-4 text-[#5B3A29]">
+            Don’t have an account?{" "}
+            <Link to="/signup" className="text-[#9C6B3B] hover:underline font-semibold">
+              Signup here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
   );
-};
-
-export default Login;
+}
