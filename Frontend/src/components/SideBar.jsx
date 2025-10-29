@@ -33,10 +33,8 @@ export const SideBar = () => {
       settings: path.includes("settings"),
       help: path.includes("help"),
     };
-
     const isAnyTrue = Object.values(current).some(Boolean);
     if (!isAnyTrue) current.dashboard = true;
-
     setActive(current);
   };
 
@@ -59,23 +57,22 @@ export const SideBar = () => {
 
   const [data, setData] = useState(null);
   const navigate = useNavigate();
+
   const getUser = async () => {
     const userData = await userInfo();
     if (!userData.found) {
-      navigate('/login');
+      navigate("/login");
     } else {
       setData(userData.user);
     }
-  }
-
+  };
 
   useEffect(() => {
     getUser();
   }, []);
 
-
   return (
-    <div className="fixed min-h-screen  text-[#333333] flex flex-col p-2 space-y-6 w-15 md:w-50 transition-all duration-300 pt-4 shadow-md bg-[rgb(243,243,243)] ">
+    <div className="fixed min-h-screen flex flex-col p-3 space-y-6 w-16 md:w-52 transition-all duration-300 pt-5 shadow-md bg-[#fdf3e7] border-r border-[#d6bfa6] text-[#3a2e28]">
       <nav className="flex flex-col space-y-2">
         {[
           { to: "/home/dashboard", icon: FaHome, label: "Dashboard", key: "dashboard" },
@@ -85,23 +82,30 @@ export const SideBar = () => {
           { to: "/home/reports", icon: FaChartBar, label: "Reports", key: "reports" },
           { to: "/home/settings", icon: FaCog, label: "Settings", key: "settings" },
           { to: "/home/help-support", icon: FaQuestionCircle, label: "Help & Support", key: "help" },
-        ].map((item) => (
-          (item.key === "officials" && data?.email.endsWith("@civix.gov.in") || item.key !== 'officials') && <Link
-            key={item.key}
-            to={item.to}
-            className={`flex items-center space-x-3 p-2 rounded-lg font-medium transition-colors duration-200 ${active[item.key]
-                ? "bg-[#0055A4] text-white shadow-md"
-                : "hover:bg-[#003f7d] hover:text-white text-[#333333]"
-              }`}
-            onClick={() => handleClick(item.key)}
-          >
-            <item.icon className={`text-xl ${active[item.key] ? "text-white" : "text-[#0055A4]"}`} />
-            <span className="hidden md:inline">{item.label}</span>
-          </Link>
-        ))}
+        ].map(
+          (item) =>
+            ((item.key === "officials" && data?.email.endsWith("@civix.gov.in")) ||
+              item.key !== "officials") && (
+              <Link
+                key={item.key}
+                to={item.to}
+                className={`flex items-center space-x-3 p-2 rounded-lg font-medium transition-all duration-200 ${
+                  active[item.key]
+                    ? "bg-[#8B5E3C] text-white shadow-md"
+                    : "hover:bg-[#a18464] hover:text-white text-[#4a2c2a]"
+                }`}
+                onClick={() => handleClick(item.key)}
+              >
+                <item.icon
+                  className={`text-xl transition ${
+                    active[item.key] ? "text-white" : "text-[#8B5E3C]"
+                  }`}
+                />
+                <span className="hidden md:inline">{item.label}</span>
+              </Link>
+            )
+        )}
       </nav>
     </div>
-
-
   );
 };

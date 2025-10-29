@@ -1,10 +1,10 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { userInfo, updateProfile, deleteAccount } from "../axios/user";
 import { getPetitionsData } from "../axios/petition";
 import { getPollsData } from "../axios/poll";
 import { Pie } from "react-chartjs-2";
-import {getSignsApi} from '../axios/sign';
+import { getSignsApi } from '../axios/sign';
 import { Bounce, toast } from "react-toastify";
 import {
   Chart as ChartJS,
@@ -81,7 +81,8 @@ export const Profile = () => {
     fetchAll();
   }, []);
 
-  const handleSave = async () => {
+  const handleSave = async () => { 
+    console.log(editableUser)
     const res = await updateProfile({
       name: editableUser.name,
       phone: editableUser.phone,
@@ -93,29 +94,9 @@ export const Profile = () => {
       }
     });
     if(res.found) {
-    toast.success(res.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
-    }else {
-      toast.error(res.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
+      toast.success(res.message, { theme: "dark", transition: Bounce });
+    } else {
+      toast.error(res.message, { theme: "dark", transition: Bounce });
     }
   };
 
@@ -128,24 +109,21 @@ export const Profile = () => {
     }
   };
 
-  if (loading) return <div className="text-center py-10 text-white">Loading...</div>;
+  if (loading) return <div className="text-center py-10 text-[#A68C69]">Loading...</div>;
 
   return (
-    <div className="bg-[#9ac4ee] flex flex-col items-start p-3 gap-5">
-      <div className="text-3xl text-red-500">Profile</div>
-        <div className="min-h-screen  text-gray-800">
+    <div className="bg-[#F9F4EE] flex flex-col items-start p-3 gap-5 min-h-screen">
+      <div className="text-3xl text-[#A68C69] font-bold mb-3">Profile</div>
+      <div className="flex flex-col lg:flex-row gap-6 mb-10 w-full">
 
-
-      <div className="flex flex-col lg:flex-row gap-6 mb-10">
-        
-
-        <div className="bg-white rounded-xl p-6 w-full lg:w-1/3 shadow-md border border-gray-200">
-          <div className="w-20 h-20 flex items-center justify-center rounded-full bg-blue-500 text-white text-3xl font-bold mx-auto shadow">
+        {/* Left Panel */}
+        <div className="bg-[#FFFDF9] rounded-xl p-6 w-full lg:w-1/3 shadow-md border border-[#CBB89D]">
+          <div className="w-20 h-20 flex items-center justify-center rounded-full bg-[#B89F79] text-white text-3xl font-bold mx-auto shadow">
             {user?.name?.charAt(0).toUpperCase()}
           </div>
 
           <textarea
-            className="mt-4 w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 resize-none focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="mt-4 w-full p-3 bg-[#FFFDF9] border border-[#CBB89D] rounded-lg text-gray-800 resize-none focus:ring-2 focus:ring-[#B89F79] focus:outline-none"
             rows={4}
             placeholder="Write your bio..."
             value={editableUser.bio}
@@ -155,7 +133,7 @@ export const Profile = () => {
           />
 
           <div className="mt-6 space-y-3">
-            <h3 className="text-lg font-semibold text-blue-700">Social Links</h3>
+            <h3 className="text-lg font-semibold text-[#A68C69]">Social Links</h3>
             {editableUser.socialLinks.map((link, index) => (
               <input
                 key={index}
@@ -167,56 +145,53 @@ export const Profile = () => {
                   updated[index] = e.target.value;
                   setEditableUser({ ...editableUser, socialLinks: updated });
                 }}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full bg-[#FFFDF9] border border-[#CBB89D] rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#B89F79] focus:outline-none"
               />
             ))}
           </div>
         </div>
 
-
-        <div className="bg-white rounded-xl p-6 w-full lg:w-2/3 shadow-md border border-gray-200">
+        {/* Right Panel */}
+        <div className="bg-[#FFFDF9] rounded-xl p-6 w-full lg:w-2/3 shadow-md border border-[#CBB89D]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
-              <label className="text-gray-600 text-sm">Name</label>
+              <label className="text-[#A68C69] text-sm">Name</label>
               <input
                 type="text"
                 value={editableUser.name}
                 onChange={(e) =>
                   setEditableUser({ ...editableUser, name: e.target.value })
                 }
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full bg-[#FFFDF9] border border-[#CBB89D] rounded-lg p-2 mt-1 focus:ring-2 focus:ring-[#B89F79] focus:outline-none"
               />
             </div>
-
             <div>
-              <label className="text-gray-600 text-sm">Email</label>
+              <label className="text-[#A68C69] text-sm">Email</label>
               <input
                 type="text"
                 value={user.email}
                 readOnly
-                className="w-full bg-gray-100 border border-gray-300 rounded-lg p-2 mt-1 text-gray-500"
+                className="w-full bg-[#F9F4EE] border border-[#CBB89D] rounded-lg p-2 mt-1 text-gray-600"
               />
             </div>
-
             <div>
-              <label className="text-gray-600 text-sm">Phone</label>
+              <label className="text-[#A68C69] text-sm">Phone</label>
               <input
                 type="text"
                 value={editableUser.phone}
                 onChange={(e) =>
                   setEditableUser({ ...editableUser, phone: e.target.value })
                 }
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full bg-[#FFFDF9] border border-[#CBB89D] rounded-lg p-2 mt-1 focus:ring-2 focus:ring-[#B89F79] focus:outline-none"
               />
             </div>
-
             <div>
-              <label className="text-gray-600 text-sm">Role</label>
+              <label className="text-[#A68C69] text-sm">Role</label>
               <input
                 type="text"
                 value={user.role}
                 readOnly
-                className="w-full bg-gray-100 border border-gray-300 rounded-lg p-2 mt-1 text-gray-500"
+                className="w-full bg-[#F9F4EE] border border-[#CBB89D] rounded-lg p-2 mt-1 text-gray-600"
               />
             </div>
           </div>
@@ -224,13 +199,13 @@ export const Profile = () => {
           <div className="flex gap-4">
             <button
               onClick={handleSave}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition shadow-sm"
+              className="bg-[#B89F79] hover:bg-[#A68C69] text-white px-4 py-2 rounded-lg transition shadow-sm"
             >
               Save Changes
             </button>
             <button
               onClick={handleDelete}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition shadow-sm"
+              className="bg-[#C47F4E] hover:bg-[#A65E37] text-white px-4 py-2 rounded-lg transition shadow-sm"
             >
               Delete Account
             </button>
@@ -238,40 +213,27 @@ export const Profile = () => {
         </div>
       </div>
 
-
-      <section className="mb-10">
-        <h2 className="text-2xl font-bold mb-4 text-blue-700">Petitions</h2>
+      {/* Petitions */}
+      <section className="mb-10 w-full" >
+        <h2 className="text-2xl font-bold mb-4 text-[#A68C69]">Petitions</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card title="Petitions Created" count={petitionStats.created}>
-            <Link to="/create-petition" className="bg-blue-600 p-2 rounded-md text-white">Create Petition</Link>
-          </Card>
-          <Card title="Active Petitions" count={petitionStats.active}>
-            <Link to="/view-petitions" className="bg-blue-600 p-2 rounded-md text-white">View Petitions</Link>
-          </Card>
-          <Card title="Petitions Signed by Me" count={petitionStats.signed}>
-            <Link to="/view-signed" className="bg-blue-600 p-2 rounded-md text-white">View Petitions</Link>
-          </Card>
+          <Card title="Petitions Created" count={petitionStats.created} buttonText="Create Petition" buttonLink="/create-petition"/>
+          <Card title="Active Petitions" count={petitionStats.active} buttonText="View Petitions" buttonLink="/view-petitions"/>
+          <Card title="Petitions Signed by Me" count={petitionStats.signed} buttonText="View Petitions" buttonLink="/view-signed"/>
         </div>
       </section>
 
-
-      <section className="mb-10">
-        <h2 className="text-2xl font-bold mb-4 text-blue-700">Polls</h2>
+      {/* Polls */}
+      <section className="mb-10 w-full">
+        <h2 className="text-2xl font-bold mb-4 text-[#A68C69]">Polls</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card title="Polls Created" count={pollStats.created}>
-            <Link to="/create-poll" className="bg-blue-600 p-2 rounded-md text-white">Create Poll</Link>
-          </Card>
-          <Card title="Active Polls" count={pollStats.active}>
-            <Link to="/view-polls" className="bg-blue-600 p-2 rounded-md text-white">View Polls</Link>
-          </Card>
-          <Card title="Polls Voted" count={pollStats.voted}>
-            <Link to="/view-voted" className="bg-blue-600 p-2 rounded-md text-white">View Polls</Link>
-          </Card>
+          <Card title="Polls Created" count={pollStats.created} buttonText="Create Poll" buttonLink="/create-poll"/>
+          <Card title="Active Polls" count={pollStats.active} buttonText="View Polls" buttonLink="/view-polls"/>
+          <Card title="Polls Voted" count={pollStats.voted} buttonText="View Polls" buttonLink="/view-voted"/>
         </div>
       </section>
 
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 w-full">
         <PieChart
           title="Petition Overview"
           data={[petitionStats.created, petitionStats.active, petitionStats.signed]}
@@ -284,45 +246,54 @@ export const Profile = () => {
         />
       </div>
     </div>
-    </div>
-
-    
   );
 };
 
-
-const Card = ({ title, count, children }) => (
-  <div className="bg-white p-6 rounded-xl border border-gray-200 text-center shadow-sm hover:shadow-md transition-all">
-    <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
-    <p className="text-3xl font-bold text-blue-500 mb-4">{count}</p>
-    {children}
+const Card = ({ title, count, buttonText, buttonLink }) => (
+  <div className="bg-[#FFFDF9] p-6 rounded-xl border border-[#CBB89D] text-center shadow-sm hover:shadow-md transition-all">
+    <h3 className="text-lg font-semibold text-[#A68C69] mb-2">{title}</h3>
+    <p className="text-3xl font-bold text-[#B89F79] mb-4">{count}</p>
+    <Link to={buttonLink} className="bg-[#B89F79] hover:bg-[#A68C69] p-2 rounded-md text-white transition">{buttonText}</Link>
   </div>
 );
 
 const PieChart = ({ title, data, labels }) => {
+  const chartColors = ["#E6D5B8", "#CBB89D", "#B89F79"];
+  const borderColor = "#A68C69";
+
   const chartData = {
     labels,
     datasets: [
       {
         data,
-        backgroundColor: ["#3b82f6", "#10b981", "#f59e0b"],
-        borderColor: "#ffffff",
+        backgroundColor: chartColors,
+        borderColor: borderColor,
         borderWidth: 2,
       },
     ],
   };
+
   const options = {
-    plugins: { legend: { position: "bottom" } },
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: { color: "#A68C69", font: { size: 14 } },
+      },
+      tooltip: {
+        backgroundColor: "#B89F79",
+        titleColor: "#FFFDF9",
+        bodyColor: "#F9F4EE",
+      },
+    },
     maintainAspectRatio: false,
   };
+
   return (
-    <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col items-center">
-      <h3 className="text-lg font-semibold mb-3 text-blue-700">{title}</h3>
+    <div className="bg-[#F9F4EE] p-6 rounded-xl border border-[#CBB89D] shadow-sm flex flex-col items-center">
+      <h3 className="text-lg font-semibold mb-3 text-[#A68C69]">{title}</h3>
       <div className="w-56 h-56">
         <Pie data={chartData} options={options} />
       </div>
     </div>
   );
 };
-
-

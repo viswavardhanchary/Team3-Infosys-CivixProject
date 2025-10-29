@@ -1,7 +1,7 @@
-import { createBrowserRouter, RouterProvider, } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import { ToastContainer, Bounce } from 'react-toastify';
+import { ToastContainer, Bounce } from "react-toastify";
 import { Dashboard } from "./pages/Dashboard";
 import { HomeLayout } from "./Layouts/HomeLayout";
 import { Settings } from "./pages/Settings";
@@ -14,81 +14,44 @@ import { PollsForm } from "./pages/PollsForm";
 import { Profile } from "./pages/Profile";
 import { HelpSupport } from "./pages/HelpSupport";
 
+import "react-toastify/dist/ReactToastify.css";
+
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
+  { path: "/", element: <Login /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/login", element: <Login /> },
   {
     path: "/home",
     element: <HomeLayout />,
     children: [
-      {
-        path: '/home/dashboard',
-        element: <Dashboard />
-      },
-      {
-        path: '/home/profile',
-        element: <Profile />
-      },
-      {
-        path: '/home/petitions',
-        element: <Petitions />
-      },
-      {
-        path: '/home/petitions/form',
-        element: <PetitionForm />
-      },
-      {
-        path: '/home/polls',
-        element: <Polls />
-      },
-      {
-        path: '/home/polls/form',
-        element: <PollsForm />
-      },
-      {
-        path: '/home/officials',
-        element: <Officials />
-      },
-      {
-        path: '/home/reports',
-        element: <Reports />
-      },
-      {
-        path: '/home/settings',
-        element: <Settings />
-      },
-      {
-        path: '/home/help-support',
-        element: <HelpSupport />
-      },
-    ]
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "profile", element: <Profile /> },
+      { path: "petitions", element: <Petitions /> },
+      { path: "petitions/form", element: <PetitionForm /> },
+      { path: "polls", element: <Polls /> },
+      { path: "polls/form", element: <PollsForm /> },
+      { path: "officials", element: <Officials /> },
+      { path: "reports", element: <Reports /> },
+      { path: "settings", element: <Settings /> },
+      { path: "help-support", element: <HelpSupport /> },
+    ],
   },
 ]);
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 shadow-md flex">
+    <div className="min-h-screen bg-[#fdf3e7] flex flex-col">
       <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
-        closeOnClick={false}
+        closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme="colored"
         transition={Bounce}
         style={{ zIndex: 1000000 }}
       />
