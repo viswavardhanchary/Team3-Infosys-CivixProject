@@ -51,7 +51,6 @@ const updateStatus = async (req,res) => {
     await Petition.updateOne({_id: id} , {status});
     res.status(200).json({text : "Petition Updated"} )
   } catch (e) {
-    console.log(e);
     return res.status(500).json({ text: "Some Internal Server Error! Please Refresh the Page!And Try Again" });
   }
 }

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const AdminLogSchema = new mongoose.Schema({
   admin_id: String,
+  user_id: String,
   activity: [
     {
       text: String,

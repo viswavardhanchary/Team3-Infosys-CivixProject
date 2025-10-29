@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { userInfo } from "../axios/user";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const HelpSupport = () => {
   const [data, setData] = useState(null);
@@ -28,7 +29,6 @@ export const HelpSupport = () => {
 
   useEffect(() => {
     getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const faqs = [
@@ -65,7 +65,7 @@ export const HelpSupport = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    toast.info("we are woking on Helps and Support, thank u for ur paientence");
     setFormData({ ...formData, message: "" });
   };
 
@@ -80,7 +80,6 @@ export const HelpSupport = () => {
           support team directly.
         </p>
 
-        {/* FAQs */}
         <div className="mb-12">
           <h2 className="text-2xl font-semibold text-[#8B5E34] mb-6">
             Frequently Asked Questions
@@ -105,7 +104,7 @@ export const HelpSupport = () => {
           </div>
         </div>
 
-        {/* Contact Form */}
+
         <div className="border border-[#A47148] rounded-xl shadow-md p-6 md:p-8 bg-[#fffaf3]">
           <h2 className="text-2xl font-semibold text-[#8B5E34] mb-4">
             Contact Support

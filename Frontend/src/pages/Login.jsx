@@ -1,11 +1,50 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../axios/user";
+import { login, verify } from "../axios/user";
 import { toast, Bounce } from "react-toastify";
+import {useEffect} from 'react'
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+
+
+
+  useEffect(() => {
+    const check = async () => {
+      let result = {found: false , message : "Login Needed"}
+      if(localStorage.getItem("token") !== null)result = await verify();
+      if (!result.found) {
+        toast.error(result.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
+        return;
+      } else {
+        toast.success(result.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
+        navigate('/home/dashboard');
+      }
+    }
+    check();
+  }, [])
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -13,16 +52,34 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const result = await login(form);
-    if (result?.token) {
-      toast.success("Login successful!", { theme: "dark", transition: Bounce });
-      navigate("/home/dashboard");
-    } else {
-      toast.error(result?.message || "Invalid credentials", {
-        theme: "dark",
-        transition: Bounce,
-      });
+      const result = await login(form)
+      if (!result.found) {
+        toast.error(result.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
+        return;
+      } else {
+        localStorage.setItem("token", result.token);
+        toast.success(result.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce, 
+        });
+        navigate('/home/dashboard');
     }
   };
 
@@ -30,7 +87,7 @@ export default function Login() {
     <div className="flex items-center justify-center min-h-screen bg-[#F5EDE2]">
       <div className="flex flex-col md:flex-row bg-[#EADDC7] rounded-lg shadow-2xl overflow-hidden w-full max-w-5xl">
 
-        {/* Left Image Section */}
+
         <div className="md:w-1/2 bg-[#DCC7A1] relative flex items-center justify-center">
           <img
             src="/images/parliament.avif"
@@ -45,7 +102,7 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Right Login Form Section */}
+
         <div className="md:w-1/2 flex flex-col justify-center p-10 text-[#5B3A29]">
           <h2 className="text-3xl font-bold mb-6 text-[#4A2E1F]">Login</h2>
           <form onSubmit={handleSubmit} className="space-y-5">

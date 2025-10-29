@@ -28,9 +28,9 @@ export const addPost = async(petition_id , comment) => {
 
       try {
         const activity = "Added the Comment to Petition\nTitle:" + petition[0].title + "\nDescription:" + petition[0].description;
-        await Api.put('/log/addLog', { activity, admin_id: user._id });
+
+        await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : petition[0].created_user_id});
       } catch (e) {
-        console.log(e);
       }
     }
     const response = await Api.post('/comment/add' , {petition_id , comment});
@@ -56,9 +56,8 @@ export const updatePost = async (petition_id, oldComment, newComment) => {
 
       try {
         const activity = "Updated the Comment to Petition\nTitle:" + petition[0].title + "\nDescription:" + petition[0].description;
-        await Api.put('/log/addLog', { activity, admin_id: user._id });
+        await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : petition[0].created_user_id});
       } catch (e) {
-        console.log(e);
       }
     }
     const response = await Api.put('/comment/update', {
@@ -88,9 +87,8 @@ export const deletePost = async (petition_id, comment) => {
 
       try {
         const activity = "Deleted the Comment to Petition\nTitle:" + petition[0].title + "\nDescription:" + petition[0].description;
-        await Api.put('/log/addLog', { activity, admin_id: user._id });
+        await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : petition[0].created_user_id});
       } catch (e) {
-        console.log(e);
       }
     }
     const response = await Api.delete('/comment/delete', {

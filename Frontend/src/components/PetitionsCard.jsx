@@ -5,11 +5,12 @@ import { get } from "../axios/user";
 import { update } from "../axios/petition";
 import { Bounce, toast } from "react-toastify";
 import { addPost, getPost, updatePost, deletePost } from "../axios/comments";
-import { FaEdit, FaTrash, FaRegCommentDots, FaHeart, FaEye, FaPaperPlane } from "react-icons/fa";
+import { FaEdit, FaTrash, FaRegCommentDots, FaHeart, FaEye, FaPaperPlane, FaStar } from "react-icons/fa";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
 function Comment({ userId, message, userCache, setUserCache, data, petitionId, onEdit, onDelete }) {
   const [name, setName] = useState("");
+  const [email , setEmail] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(message);
 
@@ -17,10 +18,11 @@ function Comment({ userId, message, userCache, setUserCache, data, petitionId, o
     let isMounted = true;
     const fetchName = async () => {
       if (!userCache[userId]) {
-        const n = await get(userId).then((d) => (d.found ? d.user.name : "Unknown"));
+        const n = await get(userId);
         if (isMounted) {
-          setName(n);
-          setUserCache((prev) => ({ ...prev, [userId]: n }));
+          setName(n.found ? n.user.name : "UnKnown");
+          setEmail(n.found ? n.user.email : "Unknown");
+          setUserCache((prev) => ({ ...prev, [userId]: n.user.name }));
         }
       } else {
         setName(userCache[userId]);
@@ -47,7 +49,8 @@ function Comment({ userId, message, userCache, setUserCache, data, petitionId, o
           {name ? name.charAt(0).toUpperCase() : "U"}
         </div>
         <div className="flex flex-col">
-          <span className="text-sm font-semibold">{name}</span>
+          <span className="flex gap-2 text-sm font-semibold"><span>{name}</span> 
+          {email.endsWith("@civix.gov.in") && <span className="text-red-600" title={`Commented By Offical ${name}`}><FaStar/></span>}</span>
           {isEditing ? (
             <div className="flex gap-2 items-center mt-1">
               <input
@@ -168,7 +171,19 @@ export function PetitionsCard({
   };
 
   const handleAddComment = async (petition_id, comment) => {
-    const response = await addPost(petition_id, comment);
+
+    let toSend = comment;
+    try {
+      if (!Array.isArray(comment)) toSend = [comment];
+      if (toSend.length < 3) {
+
+        toSend = [...toSend, new Date().toISOString()];
+      }
+    } catch (e) {
+      toSend = [...comment, new Date().toISOString()];
+    }
+
+    const response = await addPost(petition_id, toSend);
     if (response.found) {
       toast.success(response.message, { position: "top-right", autoClose: 1000, theme: "dark", transition: Bounce });
       let getIds = [...showCommentsClick];
@@ -230,7 +245,7 @@ export function PetitionsCard({
 
         {petitionsFilters?.slice().reverse().map((pet, idx) => (
           <div key={idx} className="bg-[#F3E8DC] rounded-xl shadow-md p-5 flex flex-col justify-between border border-[#333333] hover:shadow-lg transition w-full">
-            <div className="flex flex-wrap items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap">
               <h3 className="font-bold text-lg mb-2 text-[#333333] pl-1">{pet.title}</h3>
               <p className="text-sm text-[#5A3E1B] mb-1">
                 {pet.created_on.split("T")[0].split("-").reverse().join("-") + "  - " + pet.created_on.split("T")[1].split(".")[0] + " IST"}
@@ -256,7 +271,7 @@ export function PetitionsCard({
             </div>
 
             <div className="flex justify-between items-center flex-wrap gap-4 mt-2">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1 flex-wrap">
                 <button title="View Details" className="text-[#5A3E1B] hover:text-[#A67C52] text-xl cursor-pointer" onClick={async () => { setSelectedPet(pet); setName(await userName(pet.created_user_id)); }}>
                   <FaEye />
                 </button>
@@ -264,17 +279,17 @@ export function PetitionsCard({
                   title={pet.status === "Closed" ? "Closed" : isSigned(pet) ? "Unsign" : "Sign Petition"}
                   disabled={pet.status === "Closed"}
                   onClick={(e) => handleSignPetition(pet, data._id, e)}
-                  className={`flex items-center gap-2 text-xl transition ${isSigned(pet) ? "bg-[#A67C52] hover:bg-[#5A3E1B] text-white" : "bg-[#5A3E1B] hover:bg-[#A67C52] text-white"} ${pet.status === "Closed" ? "opacity-50 cursor-not-allowed" : "cursor-pointer"} px-3 py-1 rounded-md`}
+                  className={`flex items-center gap-2 text-md transition ${isSigned(pet) ? "text-green-500" : "text-black"} ${pet.status === "Closed" ? "opacity-50 cursor-not-allowed" : "cursor-pointer"} px-3 py-1 rounded-md`}
                 >
                   <FaHeart />
-                  <span className="inline-flex items-center gap-2">{pet.signedBy.length} / {pet.goal}</span>
+                  <span className="inline-flex items-center gap-2 text-black border-none">{pet.signedBy.length} / {pet.goal}</span>
                 </button>
-                <button title={showCommentsClick.includes(pet._id) ? "Hide Comments" : "View Comments"} onClick={() => display(pet._id)} className="text-[#A67C52] hover:text-[#5A3E1B] text-xl cursor-pointer">
+                <button title={showCommentsClick.includes(pet._id) ? "Hide Comments" : "View Comments"} onClick={() => {getUser();display(pet._id)}} className="text-[#A67C52] hover:text-[#5A3E1B] text-xl cursor-pointer">
                   <FaRegCommentDots />
                 </button>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-wrap">
                 {pet.created_user_id === data._id && (
                   <Link
                     to={pet.status === "Closed" || pet.status === "Under Review" ? "#" : "/home/petitions/form"}
@@ -301,7 +316,7 @@ export function PetitionsCard({
             </div>
 
             <div className="flex flex-col gap-4 mt-5">
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-3 items-center flex-wrap">
                 <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[#5A3E1B] text-white font-bold">
                   {data ? data.name.toUpperCase().charAt(0) : "U"}
                 </div>
@@ -327,6 +342,7 @@ export function PetitionsCard({
                     if (newComments[pet._id]?.trim()) {
                       await handleAddComment(pet._id, [data._id, newComments[pet._id].trim()]);
                       setNewComments((prev) => ({ ...prev, [pet._id]: "" }));
+                      
                     }
                   }}
                   className={`${pet.status === "Closed" ? "cursor-not-allowed opacity-50" : "cursor-pointer opacity-100"} text-[#5A3E1B] hover:text-[#A67C52] text-xl`}
@@ -334,6 +350,7 @@ export function PetitionsCard({
                   <FaPaperPlane />
                 </button>
               </div>
+
 
               <div className={`flex flex-col gap-3 ${showCommentsClick.includes(pet._id) ? "max-h-60" : "h-0"} overflow-y-auto`}>
                 {allComments.map((curComments, idx) => {

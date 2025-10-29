@@ -13,7 +13,7 @@ export function PetitionModal({ pet, onClose, creatorName }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999999] overflow-y-auto px-4">
-      <div className="bg-[var(--color-card)] rounded-2xl shadow-xl p-6 w-full max-w-xs sm:max-w-md md:max-w-2xl relative my-10 border border-[var(--color-border)]">
+      <div className="bg-[#f3b87d] rounded-2xl shadow-xl p-6 w-full max-w-xs sm:max-w-md md:max-w-2xl relative my-10 border border-[var(--color-border)]">
 
         <button
           onClick={onClose}

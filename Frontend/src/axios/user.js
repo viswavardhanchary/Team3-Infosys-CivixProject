@@ -8,9 +8,9 @@ export const login = async ({ email, password }) => {
       const user = (await userInfo()).user;
       try {
         const activity = "Logined In to Account";
-        await Api.put('/log/addLog', { activity, admin_id: user._id });
+        await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : user._id});
       } catch (e) {
-        console.log(e);
+
       }
     }
     return {
@@ -99,7 +99,7 @@ export const get = async (id) => {
   }
 };
 
-// Update profile
+
 export const updateProfile = async ({ name, phone, bio, socialLinks, location }) => {
   try {
     const token = localStorage.getItem("token");
@@ -128,7 +128,22 @@ export const deleteAccount = async () => {
   }
 };
 
-// ✅ NEW: Send OTP for email verification
+
+export const changePassword = async ({ oldPassword, newPassword }) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await Api.put('/users/changePassword', { oldPassword, newPassword }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return { found: true, message: response.data.text };
+  } catch (e) {
+    return { found: false, message: e.response ? e.response.data.text : "Failed to change password" };
+  }
+};
+
+
 export const sendEmailOtp = async ({ email }) => {
   try {
     const response = await Api.post('/users/send-otp', { email });
@@ -138,7 +153,7 @@ export const sendEmailOtp = async ({ email }) => {
   }
 };
 
-// ✅ NEW: Verify OTP for email verification
+
 export const verifyEmailOtp = async ({ email, otp }) => {
   try {
     const response = await Api.post('/users/verify-otp', { email, otp });

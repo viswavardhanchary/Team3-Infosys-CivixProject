@@ -11,7 +11,6 @@ export const add = async ({id ,title,description,category,location,goal,status})
       message: response.data.text,
     }
   } catch (e) {
-    console.log(e);
     return {
       found: false,
       message: e.response?.data?.text,
@@ -45,9 +44,8 @@ export const update = async (petitionId,newStatus) => {
 
       try {
         const activity = "Updated the Petition status\nTitle:"+petition[0].title+"\nDescription:"+petition[0].description+"\nFrom:"+petition[0].status+"\nTo:"+newStatus;
-        await Api.put('/log/addLog' , {activity , admin_id : user._id});
+        await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : petition[0].created_user_id});
       }catch(e) {
-        console.log(e);
       }
     }
     const response = await Api.put(`/petitions/updateStatus/${petitionId}` ,  {status: newStatus});
@@ -75,9 +73,8 @@ export const remove = async ({id}) => {
 
       try {
         const activity = "Removed the Petition\nTitle:"+petition[0].title+"\nDescription:"+petition[0].description;
-        await Api.put('/log/addLog' , {activity , admin_id : user._id});
+        await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : petition[0].created_user_id});
       }catch(e) {
-        console.log(e);
       }
     }
 
@@ -87,7 +84,6 @@ export const remove = async ({id}) => {
       message: response.data.text,
     }
   } catch (e) {
-    console.log(e);
     return {
       found: false,
       message:"Error in Deleting"

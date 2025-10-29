@@ -47,13 +47,13 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
       {
         data: options.map((opt) => opt.votes.length),
         backgroundColor: [
-          "#8B4513", // saddle brown
-          "#D2B48C", // tan
-          "#C19A6B", // light brown
-          "#A0522D", // sienna
-          "#D2691E", // chocolate
-          "#CD853F", // peru
-          "#E9967A", // dark salmon
+          "#8B4513", 
+          "#D2B48C", 
+          "#C19A6B", 
+          "#A0522D", 
+          "#D2691E", 
+          "#CD853F", 
+          "#E9967A", 
         ],
         borderWidth: 1,
       },
@@ -75,7 +75,7 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
 
   return (
     <div className="bg-[#fdf3e7] p-6 rounded-xl shadow-md text-[#2e2e2e] mb-6 w-full border border-[#d4b998] hover:shadow-lg transition-all duration-300">
-      {/* Header */}
+
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
         <h2 className="text-2xl font-bold text-[#5A3E1B]">{poll.title}</h2>
         <p className="text-sm text-[#7a6b5a] mt-1 sm:mt-0">
@@ -83,7 +83,7 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
         </p>
       </div>
 
-      {/* Options */}
+
       <div className="flex flex-col gap-3 mt-3">
         {options.map((opt, i) => {
           const hasVoted = opt.votes.includes(currentUserId);
@@ -128,7 +128,6 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
         )}
       </div>
 
-      {/* Actions */}
       <div className="mt-5 flex items-center gap-4 justify-between flex-wrap">
         <button
           onClick={() => setShowDescription((prev) => !prev)}
@@ -183,14 +182,14 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
               <FaTrash />
             </button>
 
-            {/* Lock / Unlock Buttons */}
+
             <button
               onClick={() => handleClose(poll._id)}
               title={poll.isClosed ? "Open Poll" : "Close Poll"}
               className={`text-xl transition ${
                 poll.isClosed
-                  ? "text-[#FF0000] hover:text-[#DAA520]" // 🔓 Closed = Red → Gold
-                  : "text-[#008000] hover:text-[#00A000]" // 🔒 Open = Green → Light Green
+                  ? "text-[#FF0000] hover:text-[#DAA520]"
+                  : "text-[#008000] hover:text-[#00A000]" 
               }`}
             >
               {poll.isClosed ? <FaUnlock /> : <FaLock />}
@@ -199,14 +198,14 @@ export const PollsCard = ({ poll, currentUserId, getPolls, data, handleDelete })
         )}
       </div>
 
-      {/* Description */}
+ 
       {showDescription && (
         <p className="mt-3 text-[#7a6b5a] text-sm leading-relaxed border-t border-[#d4b998] pt-3 w-full break-all">
           {poll.description}
         </p>
       )}
 
-      {/* Report Modal */}
+
       {showReport && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
           <div
