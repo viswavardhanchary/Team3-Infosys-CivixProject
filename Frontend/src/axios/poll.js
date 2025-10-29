@@ -14,9 +14,9 @@ export const add = async ({ id, title, description, options, category, location,
     if (user.email.endsWith("@civix.gov.in")) {
       try {
         const activity = "Added the Poll\nTitle:" + title + "\nDescription:" + description;
-        await Api.put('/log/addLog', { activity, admin_id: user._id });
+        await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : polls[0].created_user_id});
       } catch (e) {
-        console.log(e);
+
       }
     }
     const response = await Api.post('/polls/add', { id, title, description, options: newOptions, category, location, allowMultiple, created_user_id });
@@ -25,7 +25,7 @@ export const add = async ({ id, title, description, options, category, location,
       message: response.data.text,
     }
   } catch (e) {
-    console.log(e);
+
     return {
       found: false,
       message: e.response?.data?.text,
@@ -43,9 +43,9 @@ export const remove = async (id) => {
 
       try {
         const activity = "Removed the Polls\nTitle:"+polls[0].title+"\nDescription:"+polls[0].description;
-        await Api.put('/log/addLog' , {activity , admin_id : user._id});
+        await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : polls[0].created_user_id});
       }catch(e) {
-        console.log(e);
+
       }
     }
     const response = await Api.delete(`/polls/remove/${id}`);
@@ -71,9 +71,9 @@ export const update = async ({ id, options }) => {
 
       try {
         const activity = "Voted to the Polls\nTitle:"+polls[0].title+"\nDescription:"+polls[0].description;
-        await Api.put('/log/addLog' , {activity , admin_id : user._id});
+        await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : polls[0].created_user_id});
       }catch(e) {
-        console.log(e);
+
       }
     }
     const response = await Api.put(`/polls/update/${id}`, { options });

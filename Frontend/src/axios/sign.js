@@ -11,9 +11,9 @@ export const addSignToPetition = async ({ user_id, petition_id, signed_user_id }
 
       try {
         const activity = "Added the Sign to Petition\nTitle:" + petition[0].title + "\nDescription:" + petition[0].description;
-        await Api.put('/log/addLog', { activity, admin_id: user._id });
+        await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : petition[0].created_user_id});
       } catch (e) {
-        console.log(e);
+
       }
     }
     const response = await Api.post('/sign/add', { petition_id, signed_user_id });
@@ -24,7 +24,7 @@ export const addSignToPetition = async ({ user_id, petition_id, signed_user_id }
       message: "SuccessFully Signed Petition"
     }
   } catch (e) {
-    console.log(e);
+
     return {
       found: false,
       message: e.response.data.text
@@ -42,9 +42,8 @@ export const removeSignToPetition = async ({ user_id, id, petition_id }) => {
 
       try {
         const activity = "Removed the Sign to Petition\nTitle:" + petition[0].title + "\nDescription:" + petition[0].description;
-        await Api.put('/log/addLog', { activity, admin_id: user._id });
+         await Api.put('/log/addLog' , {activity , admin_id : user._id , user_id : petition[0].created_user_id});
       } catch (e) {
-        console.log(e);
       }
     }
     const response = await Api.delete(`/sign/remove/${id}`);

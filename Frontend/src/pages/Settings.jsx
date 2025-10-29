@@ -9,6 +9,7 @@ import {
   FaLock,
   FaChartBar,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import {
   LineChart,
@@ -95,12 +96,13 @@ export const Settings = () => {
   };
 
   const toggleDarkMode = () => {
+    toast.info("we are woking on settings, thank u for ur paientence");
     const newMode = !darkMode;
     setDarkMode(newMode);
     localStorage.setItem("darkMode", newMode);
   };
 
-  // 🎨 Updated brown-peach color scheme
+
   const brownPrimary = "#B07A52";
   const bg = darkMode ? "bg-[#B07A52]" : "bg-[#FAF3ED]";
   const text = darkMode ? "text-[#FFF6F0]" : "text-[#4B3A2E]";
@@ -115,43 +117,26 @@ export const Settings = () => {
   ];
 
   const handleAction = (label) => {
-    setActionStatus(`Processing ${label}...`);
-    setTimeout(() => {
-      switch (label) {
-        case "Change Password":
-          setActionStatus("✅ Password changed successfully");
-          break;
-        case "Update Email":
-          setActionStatus("✉️ Email updated successfully");
-          break;
-        case "Deactivate Account":
-          setActionStatus("⚠️ Account deactivated temporarily");
-          break;
-        case "Logout":
-          setActionStatus("🔒 Logging out...");
-          setTimeout(() => navigate("/login"), 1000);
-          break;
-        default:
-          setActionStatus("");
-      }
-    }, 1200);
+    toast.info("we are woking on settings, thank u for ur paientence");
   };
 
   const handleSectionClick = (section, item) => {
-    setSectionStatus({
-      ...sectionStatus,
-      [section]: `Updated "${item}" successfully ✅`,
-    });
-    setTimeout(() => {
-      setSectionStatus((prev) => ({ ...prev, [section]: "" }));
-    }, 1500);
+    toast.info("we are woking on settings, thank u for ur paientence");
+  };
+
+  const handleSmsSetup = () => {
+    toast.info("we are woking on settings, thank u for ur paientence");
+  };
+
+  const handleGenerateBackupCodes = () => {
+    toast.info("we are woking on settings, thank u for ur paientence");
   };
 
   return (
     <div
-      className={`${bg} ${text} flex flex-col w-full min-h-screen gap-8 p-6 transition-all duration-300`}
+      className={`${bg} ${text} flex flex-col w-full min-h-screen gap-8 transition-all duration-300`}
     >
-      {/* Header */}
+
       <div
         className={`flex justify-between items-center p-6 rounded-2xl shadow-lg transition-all duration-300 ${
           darkMode
@@ -174,16 +159,15 @@ export const Settings = () => {
         </button>
       </div>
 
-      {/* User Info Section */}
+
       {user && (
         <div
           className={`p-5 rounded-2xl shadow-md flex flex-col sm:flex-row justify-between items-start sm:items-center border ${border} ${card}`}
         >
-          {/* Left: Profile Info */}
+         
           <div className="flex items-center gap-4">
             {profilePic ? (
               <img
-                src={URL.createObjectURL(profilePic)}
                 alt="Profile"
                 className="w-16 h-16 rounded-full border-2 border-[#B07A52] object-cover"
               />
@@ -194,11 +178,11 @@ export const Settings = () => {
             )}
 
             <div>
-              <p className="font-semibold text-lg">{user.name}</p>
+              <p className="font-semibold text-lg break-all">{user.name}</p>
               <p
                 className={`${
                   darkMode ? "text-[#FFF6F0]" : "text-[#4B3A2E]"
-                } text-sm`}
+                } text-sm break-all`}
               >
                 {user.email}
               </p>
@@ -213,7 +197,7 @@ export const Settings = () => {
             </div>
           </div>
 
-          {/* Right: Role Display */}
+
           <div className="relative group mt-4 sm:mt-0">
             <div
               className={`px-4 py-2 rounded-xl text-sm font-semibold shadow-inner transition-all duration-300 cursor-pointer ${
@@ -240,7 +224,7 @@ export const Settings = () => {
         </div>
       )}
 
-      {/* Two-Factor Authentication */}
+
       <div className={`p-6 rounded-2xl border shadow-lg ${card} ${border}`}>
         <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
           <FaLock size={20} /> Two-Factor Authentication
@@ -285,9 +269,7 @@ export const Settings = () => {
                   type="checkbox"
                   checked={twoFactorEnabled}
                   onChange={() => {
-                    setTwoFactorEnabled(!twoFactorEnabled);
-                    const status = !twoFactorEnabled ? "enabled" : "disabled";
-                    alert(`Email verification ${status}`);
+                    toast.info("we are woking on settings, thank u for ur paientence");
                   }}
                   className="sr-only peer"
                 />
@@ -301,19 +283,14 @@ export const Settings = () => {
               </label>
             ) : method.key === "sms" ? (
               <button
-                onClick={() => alert("SMS 2FA setup simulated!")}
+                onClick={handleSmsSetup}
                 className="px-5 py-2 rounded-xl text-white font-medium text-sm bg-[#B07A52] hover:bg-[#A06A46] transition"
               >
                 Setup
               </button>
             ) : (
               <button
-                onClick={() => {
-                  const codes = Array.from({ length: 3 }, () =>
-                    Math.random().toString(36).substring(2, 8).toUpperCase()
-                  );
-                  alert(`Backup Codes Generated:\n${codes.join("\n")}`);
-                }}
+                onClick={handleGenerateBackupCodes}
                 className="px-5 py-2 rounded-xl text-white font-medium text-sm bg-[#A06A46] hover:bg-[#8C5838] transition"
               >
                 Generate
@@ -323,7 +300,7 @@ export const Settings = () => {
         ))}
       </div>
 
-      {/* Account Actions */}
+
       <div className={`p-6 rounded-2xl border shadow-lg ${card} ${border}`}>
         <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
           <FaUser size={20} /> Account Actions
@@ -354,7 +331,7 @@ export const Settings = () => {
         )}
       </div>
 
-      {/* Settings Overview */}
+
       <div>
         <h3
           className={`text-2xl font-bold mb-4 pb-2 border-b ${
@@ -403,7 +380,7 @@ export const Settings = () => {
         </div>
       </div>
 
-      {/* Analytics */}
+
       <motion.div
         whileHover={{ scale: 1.01 }}
         className={`rounded-2xl shadow-lg p-5 border ${card} ${border}`}
@@ -430,7 +407,7 @@ export const Settings = () => {
         </ResponsiveContainer>
       </motion.div>
 
-      {/* Footer */}
+
       <footer
         className={`text-center py-4 text-sm mt-auto border-t ${
           darkMode

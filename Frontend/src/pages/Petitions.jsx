@@ -113,9 +113,9 @@ export const Petitions = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 gap-4">
+    <div className="flex flex-col flex-1 gap-4 p-2">
 
-      {/* Header */}
+
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#A67C52] p-4 rounded-md shadow-lg text-white">
         <div className="flex flex-col">
           <h1 className="text-2xl md:text-3xl font-bold">Petitions</h1>
@@ -132,10 +132,10 @@ export const Petitions = () => {
         )}
       </div>
 
-      {/* Filters */}
+
       <div className="flex items-center justify-between flex-wrap gap-2">
 
-        {/* Type Buttons */}
+
         <div className="flex flex-wrap gap-2 items-center text-sm md:text-lg">
           {["All Petitions", "My Petitions", "Signed by Me"].map((filter) => (
             ((isAdmin && filter !== "My Petitions") || !isAdmin) && (
@@ -151,7 +151,7 @@ export const Petitions = () => {
           ))}
         </div>
 
-        {/* Dropdown Filters */}
+
         <div className="flex flex-wrap gap-2 mt-2 justify-end text-sm md:text-lg">
           <select className="p-2 rounded-md border border-[#5A3E1B] bg-[#A67C52] text-white outline-none cursor-pointer"
             onClick={(e) => handleFilterClick(e, "location")}
@@ -191,7 +191,7 @@ export const Petitions = () => {
         </div>
       </div>
 
-      {/* Petitions List */}
+
       <div className="flex flex-col gap-4">
         {petitions.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 p-6 bg-[#5A3E1B] rounded-md shadow-md border border-[#A67C52] text-center">

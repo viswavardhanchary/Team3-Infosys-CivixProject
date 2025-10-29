@@ -19,6 +19,7 @@ const PollsSchema = new mongoose.Schema({
   location: String,
   allowMultiple: { type: Boolean, default: false },
   created_user_id: String,
+  created_on:  { type: Date, default: Date.now },
   isClosed: {type: Boolean , default: false}
 });
 

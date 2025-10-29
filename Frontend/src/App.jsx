@@ -13,8 +13,7 @@ import { PetitionForm } from "./pages/PetitionForm";
 import { PollsForm } from "./pages/PollsForm";
 import { Profile } from "./pages/Profile";
 import { HelpSupport } from "./pages/HelpSupport";
-
-import "react-toastify/dist/ReactToastify.css";
+import { PageNotFound } from "./pages/PageNotFound";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -36,6 +35,7 @@ const router = createBrowserRouter([
       { path: "help-support", element: <HelpSupport /> },
     ],
   },
+  { path: "*" , element: <PageNotFound/>}
 ]);
 
 function App() {
@@ -59,5 +59,8 @@ function App() {
     </div>
   );
 }
+
+
+
 
 export default App;

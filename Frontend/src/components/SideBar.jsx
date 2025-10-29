@@ -72,8 +72,8 @@ export const SideBar = () => {
   }, []);
 
   return (
-    <div className="fixed min-h-screen flex flex-col p-3 space-y-6 w-16 md:w-52 transition-all duration-300 pt-5 shadow-md bg-[#fdf3e7] border-r border-[#d6bfa6] text-[#3a2e28]">
-      <nav className="flex flex-col space-y-2">
+    <div className="fixed min-h-screen flex flex-col space-y-6 pl-3 pt-1 w-18 md:w-48 transition-all duration-300 shadow-md bg-[#fdf3e7] border-r border-[#d6bfa6] text-[#3a2e28]">
+      <nav className="flex flex-col space-y-2 items-center md:items-start w-full p-1">
         {[
           { to: "/home/dashboard", icon: FaHome, label: "Dashboard", key: "dashboard" },
           { to: "/home/petitions", icon: FaFileAlt, label: "Petitions", key: "petitions" },
@@ -89,7 +89,7 @@ export const SideBar = () => {
               <Link
                 key={item.key}
                 to={item.to}
-                className={`flex items-center space-x-3 p-2 rounded-lg font-medium transition-all duration-200 ${
+                className={`flex items-center space-x-3 p-2 rounded-lg w-full font-medium transition-all duration-200 ${
                   active[item.key]
                     ? "bg-[#8B5E3C] text-white shadow-md"
                     : "hover:bg-[#a18464] hover:text-white text-[#4a2c2a]"

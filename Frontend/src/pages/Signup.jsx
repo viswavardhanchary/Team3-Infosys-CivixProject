@@ -104,7 +104,7 @@ const Signup = () => {
     <div className="flex items-center justify-center min-h-screen bg-[#F5EDE2]">
       <div className="flex flex-col md:flex-row bg-[#EADDC7] rounded-lg shadow-2xl overflow-hidden w-full max-w-5xl">
 
-        {/* Left Image Section */}
+
         <div className="md:w-1/2 relative flex items-center justify-center">
           <img
             src="/images/parliament.avif"
@@ -119,7 +119,6 @@ const Signup = () => {
           </div>
         </div>
 
-        {/* Right Form Section */}
         <div className="md:w-1/2 flex flex-col justify-center p-10 text-[#5B3A29]">
           <h2 className="text-3xl font-bold mb-6 text-[#4A2E1F] text-center">
             Signup

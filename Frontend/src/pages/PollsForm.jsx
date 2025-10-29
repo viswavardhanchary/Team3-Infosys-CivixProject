@@ -108,7 +108,7 @@ export const PollsForm = () => {
   return (
     <div className="flex flex-col min-h-screen gap-5 bg-gradient-to-b from-[#F5E6C5] to-[#E8D3A8] text-[#3E2B1D] px-4 py-6">
 
-      {/* Back button */}
+
       <Link
         to="/home/polls"
         className="p-2 text-white bg-[#C38E56] rounded-md w-max hover:bg-[#D9A66E] hover:scale-105 transition flex items-center gap-2 shadow-md"
@@ -127,7 +127,7 @@ export const PollsForm = () => {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
-          {/* Poll Title */}
+
           <div>
             <label className="font-semibold block mb-1 text-[#7A4A1F]">
               Poll Title <span className="text-red-600">*</span>
@@ -146,7 +146,7 @@ export const PollsForm = () => {
             )}
           </div>
 
-          {/* Description */}
+
           <div>
             <label className="font-semibold block mb-1 text-[#7A4A1F]">
               Description
@@ -160,7 +160,7 @@ export const PollsForm = () => {
             />
           </div>
 
-          {/* Options */}
+
           <div>
             <label className="font-semibold block mb-2 text-[#7A4A1F]">
               Poll Options <span className="text-red-600">*</span>
@@ -231,7 +231,7 @@ export const PollsForm = () => {
             </div>
           </div>
 
-          {/* Category & Location */}
+  
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="font-semibold block mb-1 text-[#7A4A1F]">Category</label>
@@ -268,7 +268,7 @@ export const PollsForm = () => {
             </div>
           </div>
 
-          {/* Warning Box */}
+
           <div className="bg-[#FBE8C7] text-[#7A4A1F] border border-[#E2C391] p-3 rounded-md flex gap-3 items-start">
             <AiOutlineWarning className="w-6 h-6 text-[#C38E56]" />
             <div>
@@ -284,7 +284,7 @@ export const PollsForm = () => {
             </div>
           </div>
 
-          {/* Buttons */}
+
           <div className="flex flex-wrap gap-3 mt-2">
             <button
               type="submit"

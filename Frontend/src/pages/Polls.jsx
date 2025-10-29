@@ -111,10 +111,10 @@ export const Polls = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full h-full gap-3 text-[#333333]">
+    <div className="flex flex-col w-full h-full gap-3 text-[#333333] p-2">
 
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-[#A67C52] to-[#5A3E1B] p-4 rounded-md shadow-lg text-white">
+
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#A67C52] p-4 rounded-md shadow-lg text-white">
         <div className="flex flex-col">
           <h2 className="text-2xl md:text-3xl font-bold">Polls</h2>
           <p className="opacity-90 text-[#F5F5F5]">
@@ -129,10 +129,10 @@ export const Polls = () => {
         </Link>
       </div>
 
-      {/* Tabs + Location Filter */}
+
       <div className="flex justify-between items-center flex-wrap gap-2">
 
-        {/* Tabs */}
+
         <div className="flex gap-2 flex-wrap">
           {tabs.map((tab) => (
             <button
@@ -147,7 +147,7 @@ export const Polls = () => {
           ))}
         </div>
 
-        {/* Location Filter */}
+
         <select
           value={selectedLocation}
           onChange={(e) => setSelectedLocation(e.target.value)}
@@ -162,7 +162,7 @@ export const Polls = () => {
         </select>
       </div>
 
-      {/* Poll Cards */}
+
       {filteredPolls.length !== 0 ? (
         filteredPolls.map((curPoll, idx) => (
           <PollsCard

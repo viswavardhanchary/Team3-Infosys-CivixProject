@@ -87,7 +87,7 @@ export function PetitionForm() {
   return (
     <div className="flex flex-col min-h-screen gap-5 bg-gradient-to-br from-[#F5E8D0] via-[#EBD3B7] to-[#D6B892] p-6">
 
-      {/* Back Button */}
+
       <Link
         to="/home/petitions"
         className="p-2 text-white bg-[#C4A484] rounded-md w-max hover:bg-[#D6B892] hover:scale-105 transition-transform transition-colors shadow-md"
@@ -95,7 +95,7 @@ export function PetitionForm() {
         &lt; Back to Petitions
       </Link>
 
-      {/* Form Container */}
+
       <div className="bg-gradient-to-br from-[#FAF3E0] to-[#EED9B9] p-4 md:p-6 rounded-xl shadow-lg border border-[#CBB292] flex flex-col gap-5">
 
         <h1 className="text-2xl md:text-4xl font-extrabold text-[#4B3B2F] text-center drop-shadow-sm">
@@ -107,7 +107,7 @@ export function PetitionForm() {
 
         <div className="flex flex-col gap-4">
 
-          {/* Title */}
+
           <div>
             <label htmlFor="title" className="font-bold block mb-1 text-[#4B3B2F]">
               Petition Title <span className="text-red-600">*</span>
@@ -126,7 +126,7 @@ export function PetitionForm() {
             </p>
           </div>
 
-          {/* Category and Location */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="category" className="font-bold block mb-1 text-[#4B3B2F]">
@@ -171,7 +171,7 @@ export function PetitionForm() {
             </div>
           </div>
 
-          {/* Goal */}
+
           <div>
             <label htmlFor="goal" className="font-bold block mb-1 text-[#4B3B2F]">
               Signature Goal
@@ -188,7 +188,7 @@ export function PetitionForm() {
             </p>
           </div>
 
-          {/* Description */}
+
           <div>
             <label htmlFor="description" className="font-bold block mb-1 text-[#4B3B2F]">
               Description <span className="text-red-600">*</span>
@@ -207,7 +207,7 @@ export function PetitionForm() {
             </p>
           </div>
 
-          {/* Warning Box */}
+
           <div className="bg-[#FFF3E0] border border-[#E6C79C] p-3 rounded-md flex gap-3 items-start shadow-sm">
             <AiOutlineWarning className="w-6 h-6 text-[#B87333]" />
             <div>
@@ -221,7 +221,7 @@ export function PetitionForm() {
             </div>
           </div>
 
-          {/* Acknowledgment */}
+
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -237,7 +237,6 @@ export function PetitionForm() {
           </div>
           {errors.acknowledge && <p className="text-red-600 text-sm">{errors.acknowledge}</p>}
 
-          {/* Buttons */}
           <div className="flex flex-wrap gap-3 mt-2">
             <button
               onClick={submitPetition}

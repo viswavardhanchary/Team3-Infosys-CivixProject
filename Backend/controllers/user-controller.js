@@ -1,5 +1,5 @@
 
-const User = require('../models/user-model'); // adjust path if needed
+const User = require('../models/user-model'); 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const salt = Number(process.env.SALT);
@@ -20,7 +20,7 @@ const signup = async (req, res) => {
     res.status(200).json({ token: token });
     return;
   } catch (e) {
-    console.log(e);
+
     res.status(500).json({ text: "Some Internal Server Error! Please Refresh the Page!And Try Again" });
   }
 }
@@ -68,7 +68,7 @@ const updateSign = async (req, res) => {
       );
       return res.status(200).send();
     } catch (e) {
-      console.log(e);
+
       return res.status(500).json({ text: "Some Internal Server Error! Please Refresh the Page!And Try Again" });
     }
   } else {
@@ -81,7 +81,7 @@ const updateSign = async (req, res) => {
       );
       res.status(200).send()
     } catch (e) {
-      console.log(e);
+
       return res.status(500).json({ text: "Some Internal Server Error! Please Refresh the Page!And Try Again" });
     }
   }
@@ -120,7 +120,7 @@ const updateProfile = async (req, res) => {
     return res.status(400).json({ text: "Login Needed!" });
   }
   const userId = data.data;
-  console.log(data.data);
+
   const { name, phone, bio, socialLinks, location } = req.body;
 
   const updateObj = {};
@@ -143,7 +143,7 @@ const updateProfile = async (req, res) => {
     }
     return res.status(200).json({ user: updated, text: "Profile updated successfully" });
   } catch (e) {
-    console.log(e);
+
     return res.status(500).json({ text: "Some Internal Server Error! Please Refresh the Page!And Try Again" });
   }
 }
@@ -159,10 +159,33 @@ const deleteAccount = async (req, res) => {
     await User.deleteOne({ _id: userId });
     return res.status(200).json({ text: "Account deleted successfully" });
   } catch (e) {
-    console.log(e);
+
     return res.status(500).json({ text: "Some Internal Server Error! Please Refresh the Page!And Try Again" });
   }
 }
+
+const changePassword = async (req, res) => {
+  const data = verifyToken(req);
+  if (!data.found) return res.status(400).json({ text: "Login Needed!" });
+  const userId = data.data;
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword) return res.status(400).json({ text: "Missing parameters" });
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ text: "User not found" });
+    const isMatch = await bcrypt.compare(oldPassword, user.password || "");
+    if (!isMatch) return res.status(400).json({ text: "Old password is incorrect" });
+    const hashed = await bcrypt.hash(newPassword, salt);
+    user.password = hashed;
+    await user.save();
+    return res.status(200).json({ text: "Password changed successfully" });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ text: "Internal Server Error" });
+  }
+}
+
+
 
 const verifyToken = (req) => {
   const authHeader = req.headers['authorization'];
@@ -202,5 +225,6 @@ module.exports = [
   updateSign,
   getUser,
   updateProfile,
-  deleteAccount
+  deleteAccount,
+  changePassword
 ];
