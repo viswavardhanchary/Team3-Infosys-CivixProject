@@ -1,9 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Outlet , useLocation} from "react-router-dom";
 import {NavBar} from '../components/NavBar';
 import {Footer} from '../components/Footer'
 import { SideBar } from "../components/SideBar"
 
 export const HomeLayout = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0); 
+  }, [pathname]);
   
   return <div className="w-full h-full">
     <NavBar/>
