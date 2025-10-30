@@ -16,7 +16,7 @@ export const HomeLayout = () => {
     <div className='w-full flex gap-1 mt-15'>
       <SideBar/>
       <div className="border-t-5 border-[#d6bfa6] text-[#3a2e28] w-full">
-        <div className='ml-14 md:ml-50 p-3 md:p-4'>
+        <div className='ml-18 md:ml-50 p-3 md:p-4'>
       <Outlet/>
       </div>
       </div>

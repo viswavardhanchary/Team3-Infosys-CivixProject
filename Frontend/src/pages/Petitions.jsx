@@ -133,7 +133,7 @@ export const Petitions = () => {
       </div>
 
 
-      <div className="flex items-center justify-between flex-wrap gap-2">
+      <div className="flex items-center justify-between gap-2 flex-wrap">
 
 
         <div className="flex flex-wrap gap-2 items-center text-sm md:text-lg">
