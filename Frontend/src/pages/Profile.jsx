@@ -200,7 +200,7 @@ export const Profile = () => {
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap">
             <button
               onClick={handleSave}
               className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-4 py-2 rounded-lg transition shadow-sm"
