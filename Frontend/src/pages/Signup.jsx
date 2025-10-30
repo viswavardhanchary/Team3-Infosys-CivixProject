@@ -56,48 +56,53 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let tempErrors = {};
-    Object.keys(formData).forEach((key) => {
-      const errorMsg = validateField(key, formData[key]);
-      if (errorMsg) tempErrors[key] = errorMsg;
+    toast.info("Registeration is Blocked Temporarily", {
+      theme: "dark",
+      transition: Bounce,
     });
-    setErrors(tempErrors);
 
-    if (Object.keys(tempErrors).length === 0) {
-      if (formData.role === "official") {
-        if (!formData.email.endsWith("@civix.gov.in")) {
-          toast.error("Officials must use @civix.gov.in email.", {
-            theme: "dark",
-            transition: Bounce,
-          });
-          return;
-        }
-        if (!otpStep) {
-          setOtpStep(true);
-          toast.info("Enter OTP sent to your official email.", {
-            theme: "dark",
-            transition: Bounce,
-          });
-          return;
-        }
-        if (otp !== "123456") {
-          toast.error("Invalid OTP. Try again.", {
-            theme: "dark",
-            transition: Bounce,
-          });
-          return;
-        }
-      }
+    // let tempErrors = {};
+    // Object.keys(formData).forEach((key) => {
+    //   const errorMsg = validateField(key, formData[key]);
+    //   if (errorMsg) tempErrors[key] = errorMsg;
+    // });
+    // setErrors(tempErrors);
 
-      const result = await signup(formData);
-      if (!result.found) {
-        toast.error(result.message, { theme: "dark", transition: Bounce });
-      } else {
-        localStorage.setItem("token", result.token);
-        toast.success(result.message, { theme: "dark", transition: Bounce });
-        navigate("/home/dashboard");
-      }
-    }
+    // if (Object.keys(tempErrors).length === 0) {
+    //   if (formData.role === "official") {
+    //     if (!formData.email.endsWith("@civix.gov.in")) {
+    //       toast.error("Officials must use @civix.gov.in email.", {
+    //         theme: "dark",
+    //         transition: Bounce,
+    //       });
+    //       return;
+    //     }
+    //     if (!otpStep) {
+    //       setOtpStep(true);
+    //       toast.info("Enter OTP sent to your official email.", {
+    //         theme: "dark",
+    //         transition: Bounce,
+    //       });
+    //       return;
+    //     }
+    //     if (otp !== "123456") {
+    //       toast.error("Invalid OTP. Try again.", {
+    //         theme: "dark",
+    //         transition: Bounce,
+    //       });
+    //       return;
+    //     }
+    //   }
+
+    //   const result = await signup(formData);
+    //   if (!result.found) {
+    //     toast.error(result.message, { theme: "dark", transition: Bounce });
+    //   } else {
+    //     localStorage.setItem("token", result.token);
+    //     toast.success(result.message, { theme: "dark", transition: Bounce });
+    //     navigate("/home/dashboard");
+    //   }
+    // }
   };
 
   return (
