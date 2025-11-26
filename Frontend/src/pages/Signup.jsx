@@ -89,22 +89,6 @@ const Signup = () => {
           });
           return;
         }
-      } else {
-        if (!otpStep) {
-          setOtpStep(true);
-          toast.info("Enter OTP sent to your email.", {
-            theme: "dark",
-            transition: Bounce,
-          });
-          return;
-        }
-        if (otp !== "23456") {
-          toast.error("Invalid OTP. Try again.", {
-            theme: "dark",
-            transition: Bounce,
-          });
-          return;
-        }
       }
 
       try {
